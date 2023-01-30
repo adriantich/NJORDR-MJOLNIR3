@@ -18,3 +18,7 @@ however it is recomended to retain this information so taxid from NCBI could cha
 
 Information Database: This file is intended to have all the information from your DataBase but with additional information for each sequence so the 
 contruction of new DataBases could be done from this file in a faster and more efficient way. 
+
+
+DUFA id's. The name is formed by:
+\[DUFA\]-\[code-marker\]-\[15digits corresponding to taxid\]-\[H\]\[8digits corresponding to an haplotype\]
