@@ -1,7 +1,7 @@
 
 cores <- 15
 # read BOLD tsv
-bold_db <- read.csv('~/Downloads/BOLD_Public.27-Jan-2023.tsv',sep='\t')
+bold_db <- read.csv('BOLD_Public.27-Jan-2023.tsv',sep='\t')
 
 message("database loaded")
 
