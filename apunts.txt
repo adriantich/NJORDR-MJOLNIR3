@@ -1,0 +1,29 @@
+20230131
+No trobo el comando obi taxonomy i li envio un correu a la Celine
+
+Sembla que el comprimit taxdump te uns arixius que es poden llegir en format de text i algun pot ser que tingui info per comparar amb la base de dades i crear el csv final que contingui tota la info.
+
+en el web https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/taxdump_archive/ ens podem descarregar la versió del taxdump que ens vagi bé.
+
+en els arxius merged.dmp contenen els canvis de taxids i pel que veig incorpora els canvis anteriors de manera que entenc que s'hauria de fer una revisió d'aquest arxiu per comprovar que els taxid no hagin canviat.
+
+20230201
+ahir em vaig descarregar les sequencies de BOLD. aquest arxiu que ocupa 10G s'ha de reduir de manera que les sequencies que estiguin repetides s'eliminin, això és per al COI. el que passa és que pot ser que hi hagi sequencies de diferents espècies que siguin idèntiques i per decidir amb quina ens quedem el que faig és crear una columna en la que marqui un correct manually per aquelles seqüències que siguin idèntiques entre elles però de diferents espècies.
+
+veig que en el meu ordinador no ha pogut correr per falta de RAM segurament. intento correr això per parts o ho corre en el cluster.
+
+20230202
+el que vaig deixar corrent ahir partint l'arxiu en diverses parts tampoc li ha agradat al meu ordinador així que faig un script més senzill que torna dos arxius i el poso a correr al cluster.
+
+veig que hi ha problemes per llegir un dataset tant gran així que opto per fer-ho a partir del fasta i fer un obiuniq amb OBITOOLS3
+
+el que he fet però es modificar una mica el fasta amb sed ja que hi ha algunes coses que no li agraden al OBITOOLS3:
+he canviat els espais per _:
+sed -e 's/ /_/g' BOLD_Public.27-Jan-2023.fasta >BOLD_modified.fasta
+després he canviat els pipes per '; '
+sed -i -e 's/|/; /g' BOLD_modified.fasta
+
+després importo les dades amb OBITOOLS
+
+obi import --fasta-input BOLD_modified.fasta BOLD/bold_db
+
