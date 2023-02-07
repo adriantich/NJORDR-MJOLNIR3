@@ -4,7 +4,13 @@ Names Joining into Ordered Database with R for MJOLNIR3 pipeline
 This is a pipeline to create a Reference DataBase for THOR-MJOLNIR3 function to perform the taxonomic assignment of metabarcoding Data.
 
 This pipeline will be focused and have examples to construct the DUFA DataBase using its logic and using the Leray-XT segment of the COI marker.
-The intention however is provide a sequence of stemps that can be performed in with any marker.
+The intention however is provide a sequence of steps that can be performed with any marker.
+
+DUFA_db available.
+
+- v20210723
+139082 sequences
+https://drive.google.com/drive/folders/1dVfZYCwoIK6D2V7adhF4xt85WdxzUys7?usp=share_link
 
 Then, first we should describe the motivations of the following steps and the outputs that we want to get. 
 

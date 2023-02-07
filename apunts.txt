@@ -27,3 +27,25 @@ després importo les dades amb OBITOOLS
 
 obi import --fasta-input BOLD_modified.fasta BOLD/bold_db
 
+20230203
+he fet algunes coses al dms creat per al BOLD
+crec però que la modificació de l'arxiu hauria de tenir com a un tag tot el que no sigui ID:
+no funciona del tot però va per alla el tema:
+head BOLD_Public.27-Jan-2023.fasta | sed -e 's/ /_/g'  | sed -e 's/\(>[^|]+\)|/\1; DEF=/g' >BOLD_modified2.fasta
+tinc aquest arxiu a descargues de l'alien per no gastar espai al Saco.
+
+Parlant amb l'Owen em diu varies coses. un dels problemes pels quals read_tsv no està llegint bé les dades és perquè en algunes entrades pot ser que hi hagi el genoma sencer d'algun mitocondri.
+Això implica que el primer que s'ha de fer es el ecopcr. També es immportant això ja que una sequencia de Leray-Xt podria estar duplicada pero en una de les entrades que sigui mes llarga que en un altra.
+L'Owen em comunica que fa anys hi havia un problema ja que al descarregar les dades algunes sequencies que ela BOLd tenen nom d'espècie però que al a Base de dades que et descarregues no arriba a tan abaix. Es queda en nom de familia o ordre. Aquestes sequencies donarien un 100% en el ecotag però amb nom de familia.
+Si dues sequencies idèntiques són del mateix genere o són filogeneticament similars les deixem per separat.
+Si estan molt separades el que s'hauria de fer es fer un BLAST i mirar amb quines s'assemblen al NCBI.
+
+Important generar una LLISTA NEGRA amb els ID d'aquelles sequencies que podem veure que estan clarament malament. 
+Per exemple de moment no hi ha ciliats per aquest fragment.
+
+20230207
+el que funciona és: head BOLD_Public.27-Jan-2023.fasta | sed -e 's/ /_/g'  | sed -e 's/|/; DEF=/' >BOLD_modified2.fasta 
+treient el g aleshores agafa només la primera occurrencia.
+
+
+
