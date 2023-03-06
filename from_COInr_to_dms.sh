@@ -22,9 +22,15 @@ sed -i 's/\t/;\n/' prova_COInr.fasta
 # note that at the end of the sequence there can not be any space otherwise it will not upload the sequence.
 sed -i -e 's/ $//g' prova_COInr.fasta
 
-
 # we can run the following command to count all sequences and lines and be sure the sum is coherent
 # for i in DUFA_COLR_20210723* ; do echo $i ; grep '>' $i | wc -l ; wc -l $i ; done
+
+# The negative taxid have to be added to the taxdump
+# The script COInr_negTaxid_to_taxdump.R will take the taxonomy file and retrieve two files that have to be concatenated to nodes.dmp and names.dmp from the taxdump
+Rscript COInr_negTaxid_to_taxdump.R
+
+# Join the file to the taxdump
+
 
 # now you can import the data
 obi import --fasta-input DUFA_COLR_20210723_less_10digits.fasta DUFA_COI/ref_seqs
