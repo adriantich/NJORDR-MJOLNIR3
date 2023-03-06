@@ -47,5 +47,23 @@ Per exemple de moment no hi ha ciliats per aquest fragment.
 el que funciona és: head BOLD_Public.27-Jan-2023.fasta | sed -e 's/ /_/g'  | sed -e 's/|/; DEF=/' >BOLD_modified2.fasta 
 treient el g aleshores agafa només la primera occurrencia.
 
+20230213
+la ultima idea que hem tingut ha sigut que modifiquem directament el taxdump. veig que obitools3 necessita els arxius nodes.dmp taxonomy.dmp (names.dmp)? delnodes.dmp i merged.dmp.
+el que hem de modificar només seran els arixus  nodes i taxonomy. ja que els altres dos no cal tot i que han de ser-hi.
+
+20230302
+Decideixo treballar amb la base de dades COInr que representa que la actualitzen cada any i, sinó, està disponible per ser actualitzada per l'usuari. veig que té per modificar la base de dades i afegir noves sequencies. el que hem de fer però és primer trobar la manera de modificar el taxdump si és que hi ha nous taxids. En aquesta base de dades els nous taxids crec que els posa en numeros negatius.
+Dels arxius del taxdum que s'han de modificar per afegir la nova info:
+nodes.dmp --> De l'arxiu taxonomy veig que el que sha de conservar per a l'arxiu nodes.dmp son els 3 primers camps, el quart i el 13 deixar-los en blanc i els altres 8 els puc posar a 0
+names.dmp --> com que no hi ha cap tax_id negatiu que estigui repetit, els tax_id negatius s'han d'afegir de la següent manera: tax_id	|	nom	|		|	'scientific name'	|
+delnodes.dmp --> de moment si agafem el taxdump del moment en que s'ha actualitzat aixó no cal, sinó el que s'hauria de fer és revisar si algun dels tax_id de la nostra base de dades està en aquesta llista
+merged.dmp --> el mateix que per delnodes.dmp
+
+20230306
+El dia anterior he aconseguit crear el fasta que el dms llegirà però falta canviar el taxdump i veure si pot treballar amb taxids negatius i en cas que no pugui el que faré serà sumar X valor als taxids negatius 
+
+
+
+
 
 
