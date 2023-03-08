@@ -83,22 +83,22 @@ done
 script_dir="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )/"
 
 # see if the environment for Obitools is activated
+# create try function
 function try()
 {
     [[ $- = *e* ]]; SAVED_OPT_E=$?
     set +e
 }
+# create catch function
 function catch()
 {
     export ex_code=$?
     (( $SAVED_OPT_E )) && set +e
     return $ex_code
 }
-
+# call obi --help and if does not work returns and error and exits
 { try; ( obi --help &>/dev/null &&  echo "obitools activated";  ); catch || {  echo "ERROR! obitools not activated"; exit ; }; }
 
-echo 'not exited'
-exit
 
 if [ ! -d ${out_dir} ]
  then
@@ -152,23 +152,23 @@ cp ${taxdump}delnodes.dmp ${NEW_TAXDUMP}.
 cat ${taxdump}nodes.dmp ${out_dir}nodes_2join.dmp >${NEW_TAXDUMP}nodes.dmp
 cat ${taxdump}names.dmp ${out_dir}names_2join.dmp >${NEW_TAXDUMP}names.dmp
 
-
+exit
 
 # now you can import the data
-obi import --fasta-input DUFA_COLR_20210723_less_10digits.fasta DUFA_COI/ref_seqs
+obi import --fasta-input ${COInr_TAXO} ${obidms}/ref_seqs
 
 
 # import the taxdump (this can not be done if the DMS is not created)
-obi import --taxdump taxdump20210714.tar.gz DUFA_COI/taxonomy/my_tax
+obi import --taxdump ${NEW_TAXDUMP} ${obidms}/taxonomy/my_tax
 
 # taxdump information can be printed in txt format using obi less
 # obi less DUFA_COI/taxonomy/my_tax >my_tax20210714.txt
 
 # now we keep the sequences with taxid that are lower or equal rank to family
-obi grep --require-rank=species --require-rank=genus --require-rank=family --taxonomy DUFA_COI/taxonomy/my_tax DUFA_COI/ref_seqs DUFA_COI/ref_seqs_clean
+obi grep --require-rank=species --require-rank=genus --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs ${obidms}/ref_seqs_clean
 
 # build the taxonomic reference database
-obi build_ref_db -t 0.95 --taxonomy DUFA_COI/taxonomy/my_tax DUFA_COI/ref_seqs_clean DUFA_COI/ref_db
+obi build_ref_db -t 0.95 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean DUFA_COI/ref_db
 
 
 
