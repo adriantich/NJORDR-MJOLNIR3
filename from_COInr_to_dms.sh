@@ -95,7 +95,10 @@ function catch()
     return $ex_code
 }
 
-{ try; ( obi --help &>/dev/null &&  echo "obitools activated";  ); catch || {  echo "obitools not activated";  }; }
+{ try; ( obi --help &>/dev/null &&  echo "obitools activated";  ); catch || {  echo "obitools not activated"; }; }
+
+echo 'not exited'
+exit
 
 if [ ! -d ${out_dir} ]
  then
