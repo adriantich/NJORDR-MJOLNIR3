@@ -10,9 +10,23 @@
 # 2- for the names.dmp the new lines have to be in the form of 
 # <tax_id>\t|\t<name>\t|\t\t|\tscientific name\t|
 
+library("optparse")
+
+option_list = list(
+  make_option(c("-t", "--taxonomy_file"), type="character", default=NULL, metavar="character"),
+  make_option(c("-d", "--output_directory"), type="character", default='.', metavar="character")
+); 
+
+opt_parser = OptionParser(option_list=option_list);
+opt = parse_args(opt_parser);
+
+if (is.null(opt$taxonomy_file)){
+  print_help(opt_parser)
+  stop("input_file needed", call.=FALSE)
+}
 
 # read the taxonomy.txt file
-coinr_data <- read.csv('taxonomy.tsv', sep="\t",comment.char = '"')
+coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
 
 # take only the negative Taxids
 coinr_data <- coinr_data[coinr_data$tax_id < 0,]
@@ -48,5 +62,5 @@ names_dmp$name_class <- "scientific name\t|"
 
 names_dmp_pasted <- paste(names_dmp$tax_id,names_dmp$name_txt,names_dmp$unique_names,names_dmp$name_class, sep = '\t|\t')
 
-writeLines(nodes_dmp_pasted, "nodes_2join.dmp")
-writeLines(names_dmp_pasted, "names_2join.dmp")
+writeLines(nodes_dmp_pasted, paste(opt$output_directory,"nodes_2join.dmp",sep="/"))
+writeLines(names_dmp_pasted, paste(opt$output_directory,"names_2join.dmp",sep="/"))
