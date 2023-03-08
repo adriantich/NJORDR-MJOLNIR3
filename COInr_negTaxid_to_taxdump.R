@@ -26,9 +26,7 @@ if (is.null(opt$taxonomy_file)){
 }
 
 # read the taxonomy.txt file
-coinr_data <- read.table(opt$taxonomy_file,comment.char = '"',header = T, 
-                         col.names = c("tax_id","parent_tax_id","rank","name_txt",  
-                                       "old_tax_id","taxlevel","synonyms" ))
+coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
 print(paste("dimensions :",dim(coinr_data)))
 
 # take only the negative Taxids
