@@ -125,7 +125,7 @@ fi
 # First activate OBITOOLS3 environment
 # source ~/obi3-env/bin/activate
 
-echo "creatinf the fasta file with the sequences and their taxid"
+echo "creating the fasta file with the sequences and their taxid"
 
 # delete the first line which is the colnames
 awk 'NR>1' ${coinr} > ${COInr_TAXO}
