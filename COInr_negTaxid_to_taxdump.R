@@ -27,9 +27,11 @@ if (is.null(opt$taxonomy_file)){
 
 # read the taxonomy.txt file
 coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
+print(paste("dimensions :",dim(coinr_data)))
 
 # take only the negative Taxids
 coinr_data <- coinr_data[coinr_data$tax_id < 0,]
+print(paste(dim(coinr_data)[1],"negative taxids"))
 
 nodes_dmp <- coinr_data[,c("tax_id","parent_tax_id","rank")]
 nodes_dmp$embl_code <- ""
