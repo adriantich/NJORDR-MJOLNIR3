@@ -69,6 +69,14 @@ if [ -z "${obidms}" ]
  echo "final obidms object will be named COI_NJORDR.obidms"
 fi
 
+echo "coinr set as ${coinr}"
+echo "taxonomy set as ${taxonomy}"
+echo "taxdump set as ${taxdump}"
+echo "out_dir set as ${out_dir}"
+echo "obidms set as ${obidms}"
+
+
+
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   TARGET="$(readlink "$SOURCE")"
