@@ -20,4 +20,4 @@ if (is.null(opt$input_file)){
 df <- read.table(opt$input_file)
 df$V2[df$V2 < 0] <- df$V2[df$V2 < 0] + opt$new_taxids
 
-write.table(df,gsub("negative.fasta","new_taxids.fasta",opt$input_file),row.names = F,col.names = F)
+write.table(df,gsub("negative.fasta","new_taxids.fasta",opt$input_file),row.names = F,col.names = F,quote = F)
