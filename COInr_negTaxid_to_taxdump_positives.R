@@ -33,8 +33,8 @@ print(paste("dimensions :",dim(coinr_data)))
 # take only the negative Taxids
 coinr_data <- coinr_data[coinr_data$tax_id < 0,]
 print(paste(dim(coinr_data)[1],"negative taxids"))
-coinr_data$tax_id <- coinr_data$tax_id + opt$new_taxids
-coinr_data$parent_tax_id[coinr_data$parent_tax_id<0] <- coinr_data$parent_tax_id[coinr_data$parent_tax_id<0] + opt$new_taxids
+coinr_data$tax_id <- abs(coinr_data$tax_id) + opt$new_taxids
+coinr_data$parent_tax_id[coinr_data$parent_tax_id<0] <- abs(coinr_data$parent_tax_id[coinr_data$parent_tax_id<0]) + opt$new_taxids
 
 nodes_dmp <- coinr_data[,c("tax_id","parent_tax_id","rank")]
 nodes_dmp$embl_code <- ""

@@ -77,7 +77,7 @@ echo "taxdump set as ${taxdump}"
 echo "out_dir set as ${out_dir}"
 echo "obidms set as ${obidms}"
 
-
+new_taxids=100000000000000
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -135,8 +135,23 @@ awk 'NR>1' ${coinr} > ${COInr_FASTA}
 # add '>' symbol at the beginning of each line
 sed -i 's/^/>/' ${COInr_FASTA}
 
+# select those negative taxid and remove them from the fasta
+grep -P '\t-[0-9]' ${COInr_FASTA} >  ${COInr_FASTA//.fasta/_negative.fasta}
+
+sed -i -e '/\t-[0-9]/d' ${COInr_FASTA}
+
+# convert them into positives
+Rscript neg_to_pos_taxids.R -i ${COInr_FASTA//.fasta/_negative.fasta} -n ${new_taxids}
+
+# join again the files
+cat ${COInr_FASTA//.fasta/_new_taxids.fasta} >>${COInr_FASTA}
+
 # add the taxid= tag
 sed -i 's/\t/ taxid=/' ${COInr_FASTA}
+
+
+# add ${new_taxids} to the negative taxids
+
 
 # jump to next line each sequence
 sed -i 's/\t/;\n/' ${COInr_FASTA}
@@ -155,7 +170,7 @@ echo "create the additional lines to taxdump for negative taxids"
 # The negative taxid have to be added to the taxdump
 # The script COInr_negTaxid_to_taxdump.R will take the taxonomy file and retrieve two files that have to be concatenated to nodes.dmp and names.dmp from the taxdump
 # Rscript ${script_dir}COInr_negTaxid_to_taxdump.R -t ${taxonomy} -d ${out_dir}
-Rscript ${script_dir}COInr_negTaxid_to_taxdump_positives.R -t ${taxonomy} -d ${out_dir}
+Rscript ${script_dir}COInr_negTaxid_to_taxdump_positives.R -t ${taxonomy} -d ${out_dir} -n ${new_taxids}
 
 echo "lines created"
 echo "create new taxdump"
