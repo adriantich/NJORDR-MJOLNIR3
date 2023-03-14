@@ -63,6 +63,13 @@ merged.dmp --> el mateix que per delnodes.dmp
 El dia anterior he aconseguit crear el fasta que el dms llegirà però falta canviar el taxdump i veure si pot treballar amb taxids negatius i en cas que no pugui el que faré serà sumar X valor als taxids negatius 
 
 
+20230308
+he anat millorant els scripts i ara es poden cridar des de la terminal.
+intento fer un triming de les sequencies al cluster amb la linia
+perl ../../SOFT/mkCOInr/scripts/select_region.pl -tsv COInr.tsv -outdir . -e_pcr 1 -fw GGWACWRGWTGRACWNTNTAYCCYCC -min_amplicon_length 299 -max_amplicon_length 320
+
+20230313
+tinc una reunió amb la Céline. Molt simpàtica m'ha semblat. em comenta que en principi es possible que els taxid negatius si que els accepti. per comprovar-ho haig de fer obi test -t <path_to_taxdump>. També em comenta que el que haig de fer quan modifiqui el taxdump és que els arxius names i nodes tinguin el taxid corresponent a la mateixa linia a cadascun dels arxius. Em comenta que la info que no em semblava important d'aquests arxius no ho és així que la estrategia que anava seguint pot ser que funcioni. Em comenta que intentarà fer que la funció obi remove realment elimini informació ja que fins ara només eliminava el view.
 
 
 

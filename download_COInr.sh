@@ -1,7 +1,6 @@
 #!/bin/bash/
 
-# This script will create a taxo_DMS that will be the version uploaded to DUFA repository.
-
+# this script is meant to download the COInr database and trimm the fragments
 
 Help()
 {
@@ -113,7 +112,7 @@ if [ ! -d ${out_dir} ]
  mkdir ${out_dir} 
 fi
 
-COInr_FASTA=${out_dir}COInr_$( date +"%Y%m%d" ).fasta
+COInr_TAXO=${out_dir}COInr.fasta
 NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
 
 if [ ${taxdump} == ${NEW_TAXDUMP} ]
@@ -121,76 +120,4 @@ if [ ${taxdump} == ${NEW_TAXDUMP} ]
  NEW_TAXDUMP=${NEW_TAXDUMP//taxdump_/taxdump_new_}
  echo "WARNING! The new taxdump will be ${NEW_TAXDUMP}"
 fi 
-
-# First activate OBITOOLS3 environment
-# source ~/obi3-env/bin/activate
-
-echo "creating the fasta file with the sequences and their taxid"
-
-# delete the first line which is the colnames
-awk 'NR>1' ${coinr} > ${COInr_FASTA}
-
-# add '>' symbol at the beginning of each line
-sed -i 's/^/>/' ${COInr_FASTA}
-
-# add the taxid= tag
-sed -i 's/\t/ taxid=/' ${COInr_FASTA}
-
-# jump to next line each sequence
-sed -i 's/\t/;\n/' ${COInr_FASTA}
-
-# apply some changes to the file just in case
-# note that at the end of the sequence there can not be any space otherwise it will not upload the sequence.
-sed -i -e 's/ $//g' ${COInr_FASTA}
-
-echo "fasta file created"
-
-# we can run the following command to count all sequences and lines and be sure the sum is coherent
-# for i in DUFA_COLR_20210723* ; do echo $i ; grep '>' $i | wc -l ; wc -l $i ; done
-
-echo "create the additional lines to taxdump for negative taxids"
-
-# The negative taxid have to be added to the taxdump
-# The script COInr_negTaxid_to_taxdump.R will take the taxonomy file and retrieve two files that have to be concatenated to nodes.dmp and names.dmp from the taxdump
-Rscript ${script_dir}COInr_negTaxid_to_taxdump.R -t ${taxonomy} -d ${out_dir}
-
-echo "lines created"
-echo "create new taxdump"
-
-# Create the new taxdump with only the required files for Obitools3; names.dmp nodes.dmp delnodes.dmp & merged.dmp
-# Join the created files in the previous step to the originals
-if [ ! -d ${NEW_TAXDUMP} ]
- then
- mkdir ${NEW_TAXDUMP} 
-fi
-
-cp ${taxdump}merged.dmp ${NEW_TAXDUMP}.
-cp ${taxdump}delnodes.dmp ${NEW_TAXDUMP}.
-cat ${taxdump}nodes.dmp ${out_dir}nodes_2join.dmp >${NEW_TAXDUMP}nodes.dmp
-cat ${taxdump}names.dmp ${out_dir}names_2join.dmp >${NEW_TAXDUMP}names.dmp
-
-echo "new taxdump created"
-
-echo "import fasta data into the obidms"
-# now you can import the data
-obi import --fasta-input ${COInr_FASTA} ${obidms}/ref_seqs
-
-echo "fasta data imported into the obidms"
-echo "import taxdump data into the obidms"
-
-# import the taxdump (this can not be done if the DMS is not created)
-obi import --taxdump ${NEW_TAXDUMP} ${obidms}/taxonomy/my_tax
-
-echo "taxdump data imported into the obidms"
-
-# taxdump information can be printed in txt format using obi less
-# obi less DUFA_COI/taxonomy/my_tax >my_tax20210714.txt
-
-# now we keep the sequences with taxid that are lower or equal rank to family
-obi grep --require-rank=species --require-rank=genus --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs ${obidms}/ref_seqs_clean
-
-# build the taxonomic reference database
-obi build_ref_db -t 0.95 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean DUFA_COI/ref_db
-
-
 
