@@ -21,4 +21,4 @@ conda activate mkcoinr
 
 bash download_COInr_20220506.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -d ~/TAXO/
 
-bash ./from_COInr_to_dms.sh -c ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -m TAXO/taxdmp_2022-05-01 -d ~/TAXO/DUFA -o COI_NJORDR
+bash ./from_COInr_to_dms.sh -c ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -m ~/TAXO/taxdmp_2022-05-01 -d ~/TAXO/DUFA -o ~/TAXO/DUFA/COI_NJORDR
