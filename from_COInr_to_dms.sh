@@ -34,7 +34,7 @@ do
 	t) taxonomy="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
 	m) taxdump="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
-	o) obidms="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
+	o) obidms="${OPTARG}";;
 	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|c|t|m|d|o]"
 		exit;;
     esac
@@ -67,6 +67,8 @@ if [ -z "${obidms}" ]
  then
  obidms=${out_dir}COI_NJORDR
  echo "final obidms object will be named COI_NJORDR.obidms"
+ else
+ obidms=${out_dir}${obidms}
 fi
 
 echo "coinr set as ${coinr}"
