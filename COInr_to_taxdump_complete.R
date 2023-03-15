@@ -83,6 +83,7 @@ names_dmp$name_class <- "scientific name\t|"
 # modify merged and delnodes
 delnodes_dmp <- delnodes_dmp[-which(delnodes_dmp$V1 %in% nodes_dmp$tax_id),]
 merged_dmp <- merged_dmp[-which(merged_dmp$V1 %in% nodes_dmp$tax_id),]
+merged_dmp <- merged_dmp[which(merged_dmp$V3 %in% nodes_dmp$tax_id),]
 
 # join all fields
 nodes_dmp <- paste(nodes_dmp$tax_id,
