@@ -54,6 +54,8 @@ nodes_dmp$hidden_subtree_root_flag <- 0
 nodes_dmp$comments <- "\t|"
 # remove duplicates
 nodes_dmp <- nodes_dmp[!duplicated(nodes_dmp$tax_id),]
+# sort the taxids
+nodes_dmp <- nodes_dmp[order(nodes_dmp$tax_id),]
 # join all fields
 nodes_dmp <- paste(nodes_dmp$tax_id,
                           nodes_dmp$parent_tax_id,
@@ -72,6 +74,8 @@ nodes_dmp <- paste(nodes_dmp$tax_id,
 names_dmp <- coinr_data[,c("tax_id","name_txt")]
 # remove duplicates
 names_dmp <- names_dmp[!duplicated(names_dmp$tax_id),]
+# sort the taxids
+names_dmp <- names_dmp[order(names_dmp$tax_id),]
 names_dmp$unique_names <- ""
 names_dmp$name_class <- "scientific name\t|"
 
