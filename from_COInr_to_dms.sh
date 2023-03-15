@@ -178,7 +178,7 @@ echo "create the additional lines to taxdump for negative taxids"
 # The negative taxid have to be added to the taxdump
 # The script COInr_negTaxid_to_taxdump.R will take the taxonomy file and retrieve two files that have to be concatenated to nodes.dmp and names.dmp from the taxdump
 # Rscript ${script_dir}COInr_negTaxid_to_taxdump.R -t ${taxonomy} -d ${out_dir}
-Rscript ${script_dir}COInr_negTaxid_to_taxdump_positives.R -t ${taxonomy} -d ${out_dir} -n ${new_taxids}
+# Rscript ${script_dir}COInr_negTaxid_to_taxdump_positives.R -t ${taxonomy} -d ${out_dir} -n ${new_taxids}
 
 echo "lines created"
 echo "create new taxdump"
@@ -190,10 +190,15 @@ if [ ! -d ${NEW_TAXDUMP} ]
  mkdir ${NEW_TAXDUMP} 
 fi
 
-cp ${taxdump}merged.dmp ${NEW_TAXDUMP}.
-cp ${taxdump}delnodes.dmp ${NEW_TAXDUMP}.
-cat ${taxdump}nodes.dmp ${out_dir}nodes_2join.dmp >${NEW_TAXDUMP}nodes.dmp
-cat ${taxdump}names.dmp ${out_dir}names_2join.dmp >${NEW_TAXDUMP}names.dmp
+Rscript ${script_dir}COInr_to_taxdump.R -t ${taxonomy} -d ${NEW_TAXDUMP} -n ${new_taxids}
+
+touch ${NEW_TAXDUMP}merged.dmp
+touch ${NEW_TAXDUMP}delnodes.dmp
+
+# cp ${taxdump}merged.dmp ${NEW_TAXDUMP}.
+# cp ${taxdump}delnodes.dmp ${NEW_TAXDUMP}.
+# cat ${taxdump}nodes.dmp ${out_dir}nodes_2join.dmp >${NEW_TAXDUMP}nodes.dmp
+# cat ${taxdump}names.dmp ${out_dir}names_2join.dmp >${NEW_TAXDUMP}names.dmp
 
 echo "new taxdump created"
 
