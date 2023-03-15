@@ -22,6 +22,8 @@ Help()
    echo "		  printed in the current directory"
    echo ""
    echo "-o --obidms	  name of the obidms object for the THOR function from MJOLNIR3 'COI_NJORDR' by default"
+   echo ""
+   echo "-n --new_taxids  number to add to the negative taxids after turning them into positive. 100000000000000 by default"
    echo
 }
 
@@ -35,7 +37,8 @@ do
 	m) taxdump="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	o) obidms="${OPTARG}";;
-	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|c|t|m|d|o]"
+	n) new_taxids=${OPTARG};;
+	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|c|t|m|d|o|n]"
 		exit;;
     esac
 done
@@ -70,14 +73,19 @@ if [ -z "${obidms}" ]
  else
  obidms=${out_dir}${obidms}
 fi
+if [ -z "${new_taxids}" ]
+ then
+ new_taxids=100000000000000
+ echo "negative taxids will be turned into positive and added 100000000000000"
+fi
 
 echo "coinr set as ${coinr}"
 echo "taxonomy set as ${taxonomy}"
 echo "taxdump set as ${taxdump}"
 echo "out_dir set as ${out_dir}"
 echo "obidms set as ${obidms}"
+echo "new_taxids set as ${new_taxids}"
 
-new_taxids=100000000000000
 
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
