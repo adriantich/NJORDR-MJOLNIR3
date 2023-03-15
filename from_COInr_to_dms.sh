@@ -16,7 +16,9 @@ Help()
    echo ""
    echo "-t --taxonomy	  taxonomy.tsv file path from the COInr database"
    echo ""
-   echo "-m --taxdump	  decompresed taxdump directory from NCBI"
+   # echo "-m --taxdump	  decompresed taxdump directory from NCBI"
+   # echo ""
+   echo "-m --taxdump	  name of the taxdump that will be created simulating a taxdump from NCBI"
    echo ""
    echo "-d --out_dir	  optional, directory path of the output files. If not specified, ouput files will be "
    echo "		  printed in the current directory"
@@ -34,7 +36,8 @@ do
 		exit;;
 	c) coinr="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
 	t) taxonomy="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
-	m) taxdump="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
+	# m) taxdump="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
+	m) taxdump="${OPTARG}";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	o) obidms="${OPTARG}";;
 	n) new_taxids=${OPTARG};;
@@ -57,9 +60,12 @@ if [ -z "${taxonomy}" ]
  fi
 if [ -z "${taxdump}" ]
  then
- echo 'ERROR! taxdump (-m) needed'
- Help
- exit
+ NEW_TAXDUMP=${out_dir}${taxdump}/
+ #echo 'ERROR! taxdump (-m) needed'
+ # Help
+ # exit
+ else
+ NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
  fi
 if [ -z "${out_dir}" ]
  then
@@ -81,7 +87,8 @@ fi
 
 echo "coinr set as ${coinr}"
 echo "taxonomy set as ${taxonomy}"
-echo "taxdump set as ${taxdump}"
+# echo "taxdump set as ${taxdump}"
+echo "taxdump set as ${NEW_TAXDUMP}"
 echo "out_dir set as ${out_dir}"
 echo "obidms set as ${obidms}"
 echo "new_taxids set as ${new_taxids}"
@@ -124,13 +131,13 @@ if [ ! -d ${out_dir} ]
 fi
 
 COInr_FASTA=${out_dir}COInr_$( date +"%Y%m%d" ).fasta
-NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
+# NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
 
-if [ ${taxdump} == ${NEW_TAXDUMP} ]
- then
- NEW_TAXDUMP=${NEW_TAXDUMP//taxdump_/taxdump_new_}
- echo "WARNING! The new taxdump will be ${NEW_TAXDUMP}"
-fi 
+# if [ ${taxdump} == ${NEW_TAXDUMP} ]
+#  then
+#  NEW_TAXDUMP=${NEW_TAXDUMP//taxdump_/taxdump_new_}
+#  echo "WARNING! The new taxdump will be ${NEW_TAXDUMP}"
+# fi 
 
 # First activate OBITOOLS3 environment
 # source ~/obi3-env/bin/activate
