@@ -27,7 +27,7 @@ Help()
    echo
 }
 
-while getopts hc:t:m:d:o: flag
+while getopts hc:t:m:d:o:n: flag
 do
     case "${flag}" in
 	h) Help
