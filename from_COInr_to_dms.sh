@@ -60,12 +60,12 @@ if [ -z "${taxonomy}" ]
  fi
 if [ -z "${taxdump}" ]
  then
- NEW_TAXDUMP=${out_dir}${taxdump}/
+ NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
  #echo 'ERROR! taxdump (-m) needed'
  # Help
  # exit
  else
- NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
+ NEW_TAXDUMP=${out_dir}${taxdump}/
  fi
 if [ -z "${out_dir}" ]
  then
