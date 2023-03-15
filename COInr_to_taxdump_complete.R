@@ -38,9 +38,9 @@ if (is.null(opt$merged)){
 
 # read the taxonomy.txt file
 coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
-delnodes_dmp <- read.table('~/Downloads/new_taxdump_2022-04-01/delnodes.dmp',
+delnodes_dmp <- read.table(opt$delnodes,
                            header = F)
-merged_dmp <- read.table('~/Downloads/new_taxdump_2022-04-01/merged.dmp',
+merged_dmp <- read.table(opt$merged,
                            header = F)
 print(paste("dimensions :",dim(coinr_data)))
 
