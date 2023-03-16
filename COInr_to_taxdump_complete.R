@@ -36,6 +36,9 @@ if (is.null(opt$merged)){
   stop("merged file needed", call.=FALSE)
 }
 
+# disable the exponential notation
+options(scipen = 999)
+
 # read the taxonomy.txt file
 coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
 delnodes_dmp <- read.table(opt$delnodes,
