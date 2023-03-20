@@ -7,7 +7,7 @@ Help()
    # Display Help
    echo "Creating a DMS object from Obitools3 for the Taxonomic assignment by THOR function from MJOLNIR3 from the COIrn DataDase"
    echo
-   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-c] [coinr] [-t] [taxonomy] [-m] [taxdump] [-d] [out_dir] [-o] [obidms]"
+   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-s] [scripts_dir] [-f] [forward] [-r] [reverse] [-D] [Date] [-d] [out_dir]"
    echo "options:"
    echo "-h --help	  Print this Help."
    echo ""
@@ -16,6 +16,8 @@ Help()
    echo "-f --forward	  Forward primer"
    echo ""
    echo "-r --reverse	  Reverse primer"
+   echo ""
+   echo "-D --Date	  Date of the COInr database update <year>_<month>_<day>. Default 2022_05_06"
    echo ""
    echo "-d --out_dir	  Optional, directory path of the output files. If not specified, ouput files will be "
    echo "		  printed in the current directory"
@@ -30,8 +32,9 @@ do
 	s) scripts_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	f) forward="${OPTARG}";;
 	r) reverse="${OPTARG}";;
+	D) Date="${OPTARG}";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
-	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|s|f|r|d]"
+	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|s|f|r|D|d]"
 		exit;;
     esac
 done
@@ -55,6 +58,11 @@ if [ -z "${reverse}" ]
  reverse=''
  else
  reverse="-rv ${reverse}"
+ fi
+if [ -z "${Date}" ]
+ then
+ echo "Date not given, set as 2022_05_06"
+ Date='2022_05_06'
  fi
 if [ -z "${out_dir}" ]
  then
@@ -92,11 +100,11 @@ fi
 # move to the output firectory
 cd ${out_dir}
 
-wget https://zenodo.org/record/6555985/files/COInr_2022_05_06.tar.gz
-tar -zxvf COInr_2022_05_06.tar.gz
-rm COInr_2022_05_06.tar.gz
+wget https://zenodo.org/record/6555985/files/COInr_${Date}.tar.gz
+tar -zxvf COInr_${Date}.tar.gz
+rm COInr_${Date}.tar.gz
 
-mv COInr_2022_05_06 COInr
+mv COInr_${Date} COInr
 
 
 # perl ${script_dir}select_region.pl -tsv COInr/COInr.tsv -outdir COInr -e_pcr 1 -fw GGWACWRGWTGRACWNTNTAYCCYCC -min_amplicon_length 299 -max_amplicon_length 320

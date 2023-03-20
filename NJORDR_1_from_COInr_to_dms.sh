@@ -8,7 +8,7 @@ Help()
    # Display Help
    echo "Creating a DMS object from Obitools3 for the Taxonomic assignment by THOR function from MJOLNIR3 from the COIrn DataDase"
    echo
-   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-c] [coinr] [-t] [taxonomy] [-m] [taxdump] [-d] [out_dir] [-o] [obidms]"
+   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-c] [coinr] [-t] [taxonomy] [-m] [taxdump] [-d] [out_dir] [-o] [obidms] [-n] [new_taxids]"
    echo "options:"
    echo "-h --help	  Print this Help."
    echo ""
@@ -105,7 +105,7 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   fi
 done
 
-script_dir="$( cd -P "$( dirname "${SOURCE}" )" >/dev/null 2>&1 && pwd )/"
+script_dir="$( cd -P "$( dirname "${SOURCE}" )" >/dev/null 2>&1 && pwd )/scripts/"
 
 # see if the environment for Obitools is activated
 # create try function
@@ -156,7 +156,7 @@ grep -P '\t-[0-9]' ${COInr_FASTA} >  ${COInr_FASTA//.fasta/_negative.fasta}
 sed -i -e '/\t-[0-9]/d' ${COInr_FASTA}
 
 # convert them into positives
-Rscript neg_to_pos_taxids.R -i ${COInr_FASTA//.fasta/_negative.fasta} -n ${new_taxids}
+Rscript ${script_dir}NJORDR_1.1_neg_to_pos_taxids.R -i ${COInr_FASTA//.fasta/_negative.fasta} -n ${new_taxids}
 
 # join again the files
 cat ${COInr_FASTA//.fasta/_new_taxids.fasta} >>${COInr_FASTA}
@@ -197,7 +197,7 @@ if [ ! -d ${NEW_TAXDUMP} ]
  mkdir ${NEW_TAXDUMP} 
 fi
 
-Rscript ${script_dir}COInr_to_taxdump.R -t ${taxonomy} -d ${NEW_TAXDUMP} -n ${new_taxids}
+Rscript ${script_dir}NJORDR_1.2_COInr_to_taxdump.R -t ${taxonomy} -d ${NEW_TAXDUMP} -n ${new_taxids}
 
 touch ${NEW_TAXDUMP}merged.dmp
 touch ${NEW_TAXDUMP}delnodes.dmp
