@@ -38,7 +38,7 @@ do
 	t) taxonomy="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
 	# m) taxdump="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	m) taxdump="${OPTARG}";;
-	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
+	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG%\/} | rev | cut -f1 -d '/' | rev )/";;
 	o) obidms="${OPTARG}";;
 	n) new_taxids=${OPTARG};;
 	\?) echo "usage: bash NJORDR_1_from_COInr_to_dms.sh [-h|c|t|m|d|o|n]"
