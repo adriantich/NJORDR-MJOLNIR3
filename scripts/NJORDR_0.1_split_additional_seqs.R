@@ -35,4 +35,4 @@ taxonomy$synonyms <- NA
 directory <- dirname(normalizePath(opt$additional_seqs))
 
 write.table(additional_seqs[,c(1,3,6)], paste0(directory,"/seqs_2join.tsv"),row.names = F,col.names = F,quote = F,sep = "\t")
-write.table(taxonomy, paste0(directory,"/taxo_2oin.tsv"),row.names = F,col.names = F,quote = F,sep = "\t")
+write.table(taxonomy, paste0(directory,"/taxo_2join.tsv"),row.names = F,col.names = F,quote = F,sep = "\t")
