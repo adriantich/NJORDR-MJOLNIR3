@@ -2,6 +2,9 @@
 # This script converts negative taxids into positives and adds a certain number
 # to them
 
+# disable scientific notation
+options(scipen=999)
+
 library("optparse")
 
 option_list = list(

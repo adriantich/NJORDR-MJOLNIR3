@@ -19,6 +19,6 @@ unset __conda_setup
 
 conda activate mkcoinr
 
-bash download_COInr_20220506.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -d ~/TAXO/
+bash NJORDR_0_download_COInr.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -D 2022_05_06 -a DUFA_scripts/Additional_seqs.tsv -d ~/TAXO/
 
-bash ./from_COInr_to_dms.sh -c ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -m ~/TAXO/taxdmp_2022-05-01 -d ~/TAXO/DUFA -o ~/TAXO/DUFA/COI_NJORDR
+bash NJORDR_1_from_COInr_to_dms.sh -c ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -d ~/TAXO/DUFA -o ~/TAXO/DUFA/COI_NJORDR

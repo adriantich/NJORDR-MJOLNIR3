@@ -10,6 +10,10 @@
 # 2- for the names.dmp the new lines have to be in the form of 
 # <tax_id>\t|\t<name>\t|\t\t|\tscientific name\t|
 
+
+# disable scientific notation
+options(scipen=999)
+
 library("optparse")
 
 option_list = list(
