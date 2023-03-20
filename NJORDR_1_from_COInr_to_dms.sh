@@ -41,7 +41,7 @@ do
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
 	o) obidms="${OPTARG}";;
 	n) new_taxids=${OPTARG};;
-	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|c|t|m|d|o|n]"
+	\?) echo "usage: bash NJORDR_1_from_COInr_to_dms.sh [-h|c|t|m|d|o|n]"
 		exit;;
     esac
 done

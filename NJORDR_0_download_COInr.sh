@@ -37,7 +37,7 @@ Help()
    echo
 }
 
-while getopts hc:t:m:d:o: flag
+while getopts hs:f:r:D:a:d:o: flag
 do
     case "${flag}" in
 	h) Help
@@ -48,7 +48,7 @@ do
 	D) Date="${OPTARG}";;
 	a) add_seqs="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )/";;
-	\?) echo "usage: bash MOTUs_from_SWARM.sh [-h|s|f|r|D|d]"
+	\?) echo "usage: bash NJORDR_0_download_COInr.sh [-h|s|f|r|D|a|d]"
 		exit;;
     esac
 done
