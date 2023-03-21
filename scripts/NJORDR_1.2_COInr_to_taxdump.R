@@ -35,11 +35,11 @@ coinr_data <- read.csv(opt$taxonomy_file, sep="\t",comment.char = '"')
 print(paste("dimensions :",dim(coinr_data)))
 
 # take only the negative Taxids
-coinr_data_neg <- coinr_data[coinr_data$tax_id < 0,]
-coinr_data <- coinr_data[!coinr_data$tax_id < 0,]
+coinr_data_neg <- coinr_data[coinr_data$tax_id <= 0,]
+coinr_data <- coinr_data[!coinr_data$tax_id <= 0,]
 print(paste(dim(coinr_data_neg)[1],"negative taxids"))
 coinr_data_neg$tax_id <- abs(coinr_data_neg$tax_id) + opt$new_taxids
-coinr_data_neg$parent_tax_id[coinr_data_neg$parent_tax_id<0] <- abs(coinr_data_neg$parent_tax_id[coinr_data_neg$parent_tax_id<0]) + opt$new_taxids
+coinr_data_neg$parent_tax_id[coinr_data_neg$parent_tax_id<=0] <- abs(coinr_data_neg$parent_tax_id[coinr_data_neg$parent_tax_id<=0]) + opt$new_taxids
 
 coinr_data <- rbind(coinr_data,coinr_data_neg)
 rm(coinr_data_neg)
