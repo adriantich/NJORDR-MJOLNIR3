@@ -11,7 +11,8 @@ library("optparse")
 
 option_list = list(
   make_option(c("-s", "--sequences"), type="character", default=NULL, metavar="character"),
-  make_option(c("-c", "--cores"), type="numeric", default=1, metavar="numeric")
+  make_option(c("-c", "--cores"), type="numeric", default=1, metavar="numeric"),
+  make_option(c("-o", "--output"), type="character", default=NULL, metavar="character")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -21,8 +22,12 @@ if (is.null(opt$sequences)){
   print_help(opt_parser)
   stop("input_file needed", call.=FALSE)
 }
+if (is.null(opt$output)){
+  print_help(opt_parser)
+  stop("output_file needed", call.=FALSE)
+}
 
-print("Loading data")
+print(paste0("Loading data from ",opt$sequences))
 input_seqs <- read.table(opt$sequences,header = T)
 occur_taxids <- table(input_seqs$taxID)
 
@@ -51,5 +56,5 @@ print("Dereplicated")
 dereplicated_seqs <- do.call(rbind, dereplicated_seqs)
 out_seqs <- rbind(dereplicated_seqs,sing_seqs)
 
-print(paste0("writing output in ",gsub(".","_dereplicated.",opt$sequences)))
-write.table(out_seqs,gsub(".","_dereplicated.",opt$sequences),row.names = F,col.names = T, quote = F)
+print(paste0("writing output in ",opt$output))
+write.table(out_seqs,opt$output,row.names = F,col.names = T, quote = F)
