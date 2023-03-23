@@ -155,7 +155,8 @@ fi
 # perl ${script_dir}select_region.pl -tsv COInr/COInr.tsv -outdir COInr -e_pcr 1 -fw GGWACWRGWTGRACWNTNTAYCCYCC -min_amplicon_length 299 -max_amplicon_length 320
 perl ${scripts_dir}select_region.pl -tsv COInr/COInr.tsv -outdir COInr -e_pcr 1 ${forward} ${reverse} -min_amplicon_length 299 -max_amplicon_length 320
 
-
+# remove duplicates
+Rscript ${script_dir_NJORDR}NJORDR_0.2_remove_duplicates.R -s COInr/trimmed.tsv
 
 
 
