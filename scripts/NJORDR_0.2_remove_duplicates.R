@@ -21,16 +21,19 @@ if (is.null(opt$sequences)){
   stop("input_file needed", call.=FALSE)
 }
 
-input_seqs <- read.table('../COInr/trimmed.tsv',header = T)
+input_seqs <- read.table(opt$sequences,header = T)
 occur_taxids <- table(input_seqs$taxID)
 sing_seqs <- input_seqs[input_seqs$taxID %in% as.integer(names(occur_taxids[occur_taxids==1])),]
 input_seqs <- input_seqs[!input_seqs$taxID %in% as.integer(names(occur_taxids[occur_taxids==1])),]
 
-dereplicated_seqs <- lapply(X = unique(input_seqs$taxID), FUN = function(x){
-  seqs_small <- input_seqs[input_seqs$taxID==x,]
-  seqs_small <- seqs_small[!duplicated(seqs_small$sequence),]
-  return(seqs_small)
-})
+if (dim(input_seqs)[1]>1) {
+  dereplicated_seqs <- lapply(X = unique(input_seqs$taxID), FUN = function(x){
+    seqs_small <- input_seqs[input_seqs$taxID==x,]
+    seqs_small <- seqs_small[!duplicated(seqs_small$sequence),]
+    return(seqs_small)
+  })
+}
+
 dereplicated_seqs <- do.call(rbind, dereplicated_seqs)
 out_seqs <- rbind(dereplicated_seqs,sing_seqs)
 
