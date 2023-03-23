@@ -10,7 +10,8 @@ options(scipen=999)
 library("optparse")
 
 option_list = list(
-  make_option(c("-s", "--sequences"), type="character", default=NULL, metavar="character")
+  make_option(c("-s", "--sequences"), type="character", default=NULL, metavar="character"),
+  make_option(c("-c", "--cores"), type="numeric", default=1, metavar="numeric")
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -27,11 +28,19 @@ sing_seqs <- input_seqs[input_seqs$taxID %in% as.integer(names(occur_taxids[occu
 input_seqs <- input_seqs[!input_seqs$taxID %in% as.integer(names(occur_taxids[occur_taxids==1])),]
 
 if (dim(input_seqs)[1]>1) {
-  dereplicated_seqs <- lapply(X = unique(input_seqs$taxID), FUN = function(x){
-    seqs_small <- input_seqs[input_seqs$taxID==x,]
-    seqs_small <- seqs_small[!duplicated(seqs_small$sequence),]
-    return(seqs_small)
-  })
+  if (opt$cores == 1) {
+    dereplicated_seqs <- lapply(X = unique(input_seqs$taxID), FUN = function(x){
+      seqs_small <- input_seqs[input_seqs$taxID==x,]
+      seqs_small <- seqs_small[!duplicated(seqs_small$sequence),]
+      return(seqs_small)
+    })
+  } else { 
+    dereplicated_seqs <- parallel::mclapply(X = unique(input_seqs$taxID), FUN = function(x){
+      seqs_small <- input_seqs[input_seqs$taxID==x,]
+      seqs_small <- seqs_small[!duplicated(seqs_small$sequence),]
+      return(seqs_small)
+    },mc.cores = opt$cores)
+  }
 }
 
 dereplicated_seqs <- do.call(rbind, dereplicated_seqs)
