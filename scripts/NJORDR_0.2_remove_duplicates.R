@@ -22,11 +22,15 @@ if (is.null(opt$sequences)){
   stop("input_file needed", call.=FALSE)
 }
 
+print("Loading data")
 input_seqs <- read.table(opt$sequences,header = T)
 occur_taxids <- table(input_seqs$taxID)
+
+print("Separating singleton taxids")
 sing_seqs <- input_seqs[input_seqs$taxID %in% as.integer(names(occur_taxids[occur_taxids==1])),]
 input_seqs <- input_seqs[!input_seqs$taxID %in% as.integer(names(occur_taxids[occur_taxids==1])),]
 
+print("Dereplicating. This will take a while.")
 if (dim(input_seqs)[1]>1) {
   if (opt$cores == 1) {
     dereplicated_seqs <- lapply(X = unique(input_seqs$taxID), FUN = function(x){
@@ -43,7 +47,9 @@ if (dim(input_seqs)[1]>1) {
   }
 }
 
+print("Dereplicated")
 dereplicated_seqs <- do.call(rbind, dereplicated_seqs)
 out_seqs <- rbind(dereplicated_seqs,sing_seqs)
 
+print(paste0("writing output in ",gsub(".","_dereplicated.",opt$sequences)))
 write.table(out_seqs,gsub(".","_dereplicated.",opt$sequences),row.names = F,col.names = T, quote = F)
