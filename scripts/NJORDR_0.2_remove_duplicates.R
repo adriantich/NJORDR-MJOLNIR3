@@ -57,4 +57,4 @@ dereplicated_seqs <- do.call(rbind, dereplicated_seqs)
 out_seqs <- rbind(dereplicated_seqs,sing_seqs)
 
 print(paste0("writing output in ",opt$output))
-write.table(out_seqs,opt$output,row.names = F,col.names = T, quote = F)
+write.table(out_seqs,opt$output,row.names = F,col.names = T, quote = F, sep ="\t")
