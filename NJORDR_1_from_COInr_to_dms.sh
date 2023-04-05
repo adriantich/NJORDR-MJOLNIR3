@@ -180,14 +180,14 @@ echo "fasta file created"
 # we can run the following command to count all sequences and lines and be sure the sum is coherent
 # for i in DUFA_COLR_20210723* ; do echo $i ; grep '>' $i | wc -l ; wc -l $i ; done
 
-echo "create the additional lines to taxdump for negative taxids"
+# echo "create the additional lines to taxdump for negative taxids"
 
 # The negative taxid have to be added to the taxdump
 # The script COInr_negTaxid_to_taxdump.R will take the taxonomy file and retrieve two files that have to be concatenated to nodes.dmp and names.dmp from the taxdump
 # Rscript ${script_dir}COInr_negTaxid_to_taxdump.R -t ${taxonomy} -d ${out_dir}
 # Rscript ${script_dir}COInr_negTaxid_to_taxdump_positives.R -t ${taxonomy} -d ${out_dir} -n ${new_taxids}
 
-echo "lines created"
+# echo "lines created"
 echo "create new taxdump"
 
 # Create the new taxdump with only the required files for Obitools3; names.dmp nodes.dmp delnodes.dmp & merged.dmp
