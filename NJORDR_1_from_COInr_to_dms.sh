@@ -162,14 +162,14 @@ Rscript ${script_dir}NJORDR_1.1_neg_to_pos_taxids.R -i ${COInr_FASTA//.fasta/_ne
 cat ${COInr_FASTA//.fasta/_new_taxids.fasta} >>${COInr_FASTA}
 
 # add the taxid= tag
-sed -i 's/\t/ taxid=/' ${COInr_FASTA}
+sed -i 's/,/ taxid=/' ${COInr_FASTA}
 
 
 # add ${new_taxids} to the negative taxids
 
 
 # jump to next line each sequence
-sed -i 's/\t/;\n/' ${COInr_FASTA}
+sed -i 's/,/;\n/' ${COInr_FASTA}
 
 # apply some changes to the file just in case
 # note that at the end of the sequence there can not be any space otherwise it will not upload the sequence.
