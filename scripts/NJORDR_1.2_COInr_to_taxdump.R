@@ -19,7 +19,7 @@ library("optparse")
 option_list = list(
   make_option(c("-t", "--taxonomy_file"), type="character", default=NULL, metavar="character"),
   make_option(c("-d", "--output_directory"), type="character", default='.', metavar="character"),
-  make_option(c("-n", "--new_taxids"), type="numeric", default=100000000000000, metavar="character")
+  make_option(c("-n", "--new_taxids"), type="numeric", default=1000000000, metavar="character") # the highest taxid cannot exced 2,147,483,647
 ); 
 
 opt_parser = OptionParser(option_list=option_list);

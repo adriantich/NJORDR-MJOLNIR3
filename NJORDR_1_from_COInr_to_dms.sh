@@ -25,7 +25,7 @@ Help()
    echo ""
    echo "-o --obidms	  name of the obidms object for the THOR function from MJOLNIR3 'COI_NJORDR' by default"
    echo ""
-   echo "-n --new_taxids  number to add to the negative taxids after turning them into positive. 100000000000000 by default"
+   echo "-n --new_taxids  number to add to the negative taxids after turning them into positive. The highest taxid cannot exced 2,147,483,647. 1000000000 by default. "
    echo
 }
 
@@ -81,8 +81,8 @@ if [ -z "${obidms}" ]
 fi
 if [ -z "${new_taxids}" ]
  then
- new_taxids=100000000000000
- echo "negative taxids will be turned into positive and added 100000000000000"
+ new_taxids=1000000000 # the highest taxid cannot exced 2,147,483,647
+ echo "negative taxids will be turned into positive and added 1000000000"
 fi
 
 echo "coinr set as ${coinr}"
