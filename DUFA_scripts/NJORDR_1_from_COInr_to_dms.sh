@@ -226,12 +226,12 @@ echo "taxdump data imported into the obidms"
 # obi less DUFA_COI/taxonomy/my_tax >my_tax20210714.txt
 
 # now we keep the sequences with taxid that are lower or equal rank to family
-obi grep --require-rank=species --require-rank=genus --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs ${obidms}/ref_seqs_clean
+obi grep --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs ${obidms}/ref_seqs_clean
 
 echo "greped ref_seqs_clean"
 
 # build the taxonomic reference database
-obi build_ref_db -t 0.95 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
+obi build_ref_db -t 0.97 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
 
 
 

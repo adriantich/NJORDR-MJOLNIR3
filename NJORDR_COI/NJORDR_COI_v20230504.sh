@@ -12,7 +12,7 @@ conda activate mkcoinr
 ##############################
 
 # obtain files downloading COInr:
-bash NJORDR_1_download_COInr.sh -D 2022_05_06 -d ~/TAXO/
+bash NJORDR_download_COInr.sh -D 2022_05_06 -d ~/TAXO/
 
 ##############################
 ### add sequences ###
@@ -40,7 +40,7 @@ bash NJORDR_1_download_COInr.sh -D 2022_05_06 -d ~/TAXO/
 #	4- parent_id from NCBI. If new parent_tax_id this will require manual editing of taxonomy.tsv file
 #	5- rank. 'species' suggested
 #	6- sequence
-Rscript NJORDR_2_split_additional_seqs.R -a Additional_seqs.tsv
+Rscript NJORDR_split_additional_seqs.R -a Additional_seqs.tsv
 cat seqs_2join.tsv >>~/TAXO/COInr/COInr.tsv
 cat taxo_2join.tsv >>~/TAXO/COInr/taxonomy.tsv
 
@@ -49,13 +49,13 @@ cat taxo_2join.tsv >>~/TAXO/COInr/taxonomy.tsv
 ##############################
 
 # select the region within primers
-bash NJORDR_3_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -c ~/TAXO/COInr/COInr.tsv -d ~/TAXO/COInr/
+bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -c ~/TAXO/COInr/COInr.tsv -d ~/TAXO/COInr/
 
 # reduce data and format to obitools3
 # - remove duplicates
 # - select n sequences per taxid
 # - addapt to obitools3
-Rscript NJORDR_4_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -c 19 -f ~/TAXO/COInr_v202305.fasta -T ~/TAXO/taxdump_COInr_v202305 -n 10 -x 1000000000
+Rscript NJORDR_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -c 19 -f ~/TAXO/COInr_v202305.fasta -T ~/TAXO/taxdump_COInr_v202305 -n 10 -x 1000000000
 
 
 ##############################
@@ -63,7 +63,7 @@ Rscript NJORDR_4_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr
 ##############################
 
 # obitools3 part to create the obidms object
-bash NJORDR_5_create_obidms.sh -f ~/TAXO/COInr_v202305.fasta -t ~/TAXO/COInr/taxonomy.tsv -d ~/TAXO/taxdump_COInr_v202305 -o ~/TAXO/COI_NJORDR
+bash NJORDR_create_obidms.sh -f ~/TAXO/COInr_v202305.fasta -t ~/TAXO/COInr/taxonomy.tsv -d ~/TAXO/taxdump_COInr_v202305 -o ~/TAXO/COI_NJORDR
 
 
 
