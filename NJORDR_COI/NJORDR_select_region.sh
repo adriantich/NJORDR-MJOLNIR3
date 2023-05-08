@@ -124,12 +124,14 @@ if [ ! -d ${out_dir} ]
  mkdir ${out_dir} 
 fi
 
-mkdir ${out_dir}/first_trimm
+perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} -e_pcr 1 ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length}
+
+# mkdir ${out_dir}/first_trimm
 # first select from forward to the end
-perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir}/first_trimm -e_pcr 1 ${forward} 
+# perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir}/first_trimm -e_pcr 1 ${forward} 
 
 # then from reverse to the forward
-perl ${scripts_dir}select_region.pl -tsv ${out_dir}/first_trimm/trimmed.tsv -outdir ${out_dir} -e_pcr 1 ${reverse} ${min_amplicon_length} ${max_amplicon_length}
+# perl ${scripts_dir}select_region.pl -tsv ${out_dir}/first_trimm/trimmed.tsv -outdir ${out_dir} -e_pcr 1 ${reverse} ${min_amplicon_length} ${max_amplicon_length}
 
 
 
