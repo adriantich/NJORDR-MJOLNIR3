@@ -15,6 +15,7 @@
 options(scipen=999)
 
 library("optparse")
+library("stringi")
 
 option_list = list(
   make_option(c("-t", "--taxonomy_file"), type="character", default=NULL, metavar="character"),
@@ -76,6 +77,7 @@ nodes_dmp <- paste(nodes_dmp$tax_id,
                           nodes_dmp$comments, sep = '\t|\t')
 
 names_dmp <- coinr_data[,c("tax_id","name_txt")]
+names_dmp$name_txt <- stri_trans_general(str = names_dmp$name_txt, id = "Latin-ASCII")
 # remove duplicates
 names_dmp <- names_dmp[!duplicated(names_dmp$tax_id),]
 # sort the taxids
