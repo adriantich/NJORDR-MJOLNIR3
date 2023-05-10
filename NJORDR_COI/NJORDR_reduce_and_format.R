@@ -9,6 +9,7 @@ options(scipen=999)
 
 library("optparse")
 library("dplyr")
+library("stringi")
 
 option_list = list(
   make_option(c("-s", "--sequence_input"), type="character", default=NULL, 
@@ -191,6 +192,7 @@ rm(nodes_dmp)
 
 # create names.dmp
 names_dmp <- input_taxonomy[,c("tax_id","name_txt")]
+names_dmp$name_txt <- stri_trans_general(str = names_dmp$name_txt, id = "Latin-ASCII")
 # remove duplicates
 names_dmp <- names_dmp[!duplicated(names_dmp$tax_id),]
 # sort the taxids
