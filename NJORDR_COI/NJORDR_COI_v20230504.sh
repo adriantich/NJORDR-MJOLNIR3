@@ -49,7 +49,7 @@ cat taxo_2join.tsv >>~/TAXO/COInr/taxonomy.tsv
 ##############################
 
 # select the region within primers
-bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/COInr/COInr.tsv -d ~/TAXO/COInr2/
+bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/COInr/COInr.tsv -d ~/TAXO/COInr/
 
 # reduce data and format to obitools3
 # - remove duplicates
