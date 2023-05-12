@@ -14,6 +14,7 @@ scripts_COInr=~/mkCOInr/scripts/
 scripts_DUFA=~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/DUFA_scripts/
 forward=GGWACWRGWTGRACWNTNTAYCCYCC
 forward="-fw \"${forward}\""
+# reverse=TANACYTCNGGRTGNCCRAARAAYCA
 reverse=''
 Date=2022_05_06
 # add_seqs=DUFA_scripts/Additional_seqs.tsv

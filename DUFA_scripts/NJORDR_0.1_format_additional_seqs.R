@@ -29,12 +29,14 @@ additional_seqs_AWI <- read.table(paste0(opt$in_dir,"Additional_seqs_AWI.tsv"),h
 additional_seqs_NIS <- read.table(paste0(opt$in_dir,"Additional_seqs_NIS.tsv"),header = F,quote = NULL,sep = '\t')
 # for DUFA we need to add the forward primer to the sequences
 additional_seqs_DUFA <- read.table(paste0(opt$in_dir,"Additional_seqs_DUFA.csv"),header = F,sep = '\t')
+additional_seqs_CESC <- read.table(paste0(opt$in_dir,"Additional_seqs_CESC.tsv"),header = F,sep = '\t',fill = T)
 # additional_seqs_DUFA$V6[additional_seqs_DUFA$V6!=""] <- paste0("GGWACWRGWTGRACWNTNTAYCCYCC",additional_seqs_DUFA$V6[additional_seqs_DUFA$V6!=""])
 
 
 additional_seqs <- rbind(additional_seqs_AWI,
                          additional_seqs_NIS,
-                         additional_seqs_DUFA[,1:6])
+                         additional_seqs_DUFA[,1:6],
+                         additional_seqs_CESC[,1:6])
 taxonomy <- additional_seqs[,c(3,4,5,2)]
 taxonomy$old_tax_id <- NA
 taxonomy$taxlevel <- NA

@@ -8,7 +8,7 @@ Help()
    # Display Help
    echo "Creating a DMS object from Obitools3 for the Taxonomic assignment by THOR function from MJOLNIR3 from the COIrn DataDase"
    echo
-   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-c] [coinr] [-t] [taxonomy] [-m] [taxdump] [-d] [out_dir] [-o] [obidms] [-n] [new_taxids]"
+   echo "Syntax: bash from_COInr_to_dms.sh [-h] [help] [-f] [fasta_file] [-t] [taxdump] [-o] [obidms] [-T] [threshold]"
    echo "options:"
    echo "-h --help	  Print this Help."
    echo ""
@@ -17,6 +17,8 @@ Help()
    echo "-t --taxdump	  name of the taxdump that will be used as taxonomic tree"
    echo ""
    echo "-o --obidms	  name of the obidms object for the THOR function from MJOLNIR3 'COI_NJORDR' by default"
+   echo ""
+   echo "-T --threshold	  Score threshold as a normalized identity, e.g. 0.95 for an identity of 95%. Default 0.7"
    echo ""
 }
 
@@ -28,57 +30,39 @@ do
 	f) fasta_file="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG} | rev | cut -f1 -d '/' | rev )";;
 	t) taxdump="${OPTARG}";;
 	o) obidms="${OPTARG}";;
-	\?) echo "usage: bash NJORDR_5_create_obidms.sh [-h|f|t|o]"
+	T) threshold=${OPTARG};;
+	\?) echo "usage: bash NJORDR_5_create_obidms.sh [-h|f|t|o|T]"
 		exit;;
     esac
 done
 
-if [ -z "${coinr}" ]
+if [ -z "${fasta_file}" ]
  then
- echo 'ERROR! coinr (-c) needed'
- Help
- exit
- fi
-if [ -z "${taxonomy}" ]
- then
- echo 'ERROR! taxonomy (-t) needed'
+ echo 'ERROR! fasta_file (-f) needed'
  Help
  exit
  fi
 if [ -z "${taxdump}" ]
  then
- NEW_TAXDUMP=${out_dir}taxdump_$( date +"%Y%m%d" )/
- #echo 'ERROR! taxdump (-m) needed'
- # Help
- # exit
- else
- NEW_TAXDUMP=${out_dir}${taxdump}/
- fi
-if [ -z "${out_dir}" ]
- then
- out_dir=$( pwd )/
- echo "output files will be printed in the ${out_dir} directory"
+ echo 'ERROR! taxdump (-t) needed'
+ Help
+ exit
  fi
 if [ -z "${obidms}" ]
  then
- obidms=${out_dir}COI_NJORDR
+ obidms=COI_NJORDR
  echo "final obidms object will be named COI_NJORDR.obidms"
- else
- obidms=${out_dir}${obidms}
 fi
-if [ -z "${new_taxids}" ]
+if [ -z "${threshold}" ]
  then
- new_taxids=1000000000 # the highest taxid cannot exced 2,147,483,647
- echo "negative taxids will be turned into positive and added 1000000000"
+ threshold=0.7 # the highest taxid cannot exced 2,147,483,647
+ echo "the threshold used to build the reference data base will be 0.7"
 fi
 
-echo "coinr set as ${coinr}"
-echo "taxonomy set as ${taxonomy}"
-# echo "taxdump set as ${taxdump}"
-echo "taxdump set as ${NEW_TAXDUMP}"
-echo "out_dir set as ${out_dir}"
+echo "fasta_file set as ${fasta_file}"
+echo "taxdump set as ${taxdump}"
 echo "obidms set as ${obidms}"
-echo "new_taxids set as ${new_taxids}"
+echo "threshold set as ${threshold}"
 
 
 
@@ -102,13 +86,13 @@ function catch()
 
 echo "import fasta data into the obidms"
 # now you can import the data
-obi import --fasta-input ${COInr_FASTA} ${obidms}/ref_seqs
+obi import --fasta-input ${fasta_file} ${obidms}/ref_seqs
 
 echo "fasta data imported into the obidms"
 echo "import taxdump data into the obidms"
 
 # import the taxdump (this can not be done if the DMS is not created)
-obi import --taxdump ${NEW_TAXDUMP} ${obidms}/taxonomy/my_tax
+obi import --taxdump ${taxdump} ${obidms}/taxonomy/my_tax
 
 echo "taxdump data imported into the obidms"
 
@@ -123,7 +107,7 @@ obi grep --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/re
 echo "greped ref_seqs_clean"
 
 # build the taxonomic reference database
-obi build_ref_db -t 0.95 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
+obi build_ref_db -t ${threshold} --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
 
 
 

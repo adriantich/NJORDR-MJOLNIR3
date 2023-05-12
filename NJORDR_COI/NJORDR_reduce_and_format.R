@@ -212,7 +212,7 @@ print("taxdump created")
 out_seqs$seqID <- paste(paste0(">",out_seqs$seqID),paste0("taxid=",out_seqs$taxID,";"))
 out_seqs <- paste(out_seqs$seqID,out_seqs$sequence,sep = "\n")
 
-print(paste0("writing output in ",out_seqs))
+print(paste0("writing output in ",par_fasta))
 writeLines(out_seqs, par_fasta)
 
 

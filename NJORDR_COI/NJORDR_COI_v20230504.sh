@@ -63,7 +63,7 @@ Rscript NJORDR_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/t
 ##############################
 
 # obitools3 part to create the obidms object
-bash NJORDR_create_obidms.sh -f ~/TAXO/COInr_v202305.fasta -t ~/TAXO/COInr/taxonomy.tsv -d ~/TAXO/taxdump_COInr_v202305 -o ~/TAXO/COI_NJORDR
+bash NJORDR_create_obidms.sh -f ~/TAXO/COInr_v202305.fasta -t ~/TAXO/taxdump_COInr_v202305 -o ~/TAXO/COI_NJORDR -T 0.7
 
 
 
