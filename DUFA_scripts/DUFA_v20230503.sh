@@ -43,4 +43,4 @@ perl ${scripts_COInr}select_region.pl -tsv DUFA.tsv -outdir . -e_pcr 1 ${forward
 Rscript ${scripts_DUFA}NJORDR_0.2_remove_duplicates.R -s trimmed.tsv -o trimmed_dereplicated.tsv
 
 
-bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ~/TAXO/trimmed_dereplicated.tsv -t ~/TAXO/taxonomy.tsv -d ~/TAXO/DUFA -o COI_NJORDR
+bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ${out_dir}trimmed_dereplicated.tsv -t ${out_dir}taxonomy.tsv -d ${out_dir}DUFA_07 -o COI_NJORDR
