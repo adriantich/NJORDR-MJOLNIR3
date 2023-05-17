@@ -51,6 +51,7 @@ cat ~/TAXO/COInr/taxonomy.tsv taxo_2join.tsv >~/TAXO/TAXO_COI/taxonomy.tsv
 ##############################
 
 # select the region within primers
+# set the reverse at it is. The script will perform the reverse-complementary automatically which is the one that cutadapt will use. (TGRTTYTTYGGNCAYCCNGARGTNTA)
 bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/TAXO_COI/COInr.tsv -d ~/TAXO/TAXO_COI/
 
 # reduce data and format to obitools3
