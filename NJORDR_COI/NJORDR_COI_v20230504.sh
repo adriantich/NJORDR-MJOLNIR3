@@ -40,22 +40,24 @@ bash NJORDR_download_COInr.sh -D 2022_05_06 -d ~/TAXO/
 #	4- parent_id from NCBI. If new parent_tax_id this will require manual editing of taxonomy.tsv file
 #	5- rank. 'species' suggested
 #	6- sequence
+
+mkdir ~/TAXO/TAXO_COI/
 Rscript NJORDR_split_additional_seqs.R -a Additional_seqs.tsv
-cat seqs_2join.tsv >>~/TAXO/COInr/COInr.tsv
-cat taxo_2join.tsv >>~/TAXO/COInr/taxonomy.tsv
+cat ~/TAXO/COInr/COInr.tsv seqs_2join.tsv >~/TAXO/TAXO_COI/COInr.tsv
+cat ~/TAXO/COInr/taxonomy.tsv taxo_2join.tsv >~/TAXO/TAXO_COI/taxonomy.tsv
 
 ##############################
 ### prepare data ###
 ##############################
 
 # select the region within primers
-bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/COInr/COInr.tsv -d ~/TAXO/COInr/
+bash NJORDR_select_region.sh -s ~/SOFT/mkCOInr/scripts/ -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/TAXO_COI/COInr.tsv -d ~/TAXO/TAXO_COI/
 
 # reduce data and format to obitools3
 # - remove duplicates
 # - select n sequences per taxid
 # - addapt to obitools3
-Rscript NJORDR_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/taxonomy.tsv -c 19 -f ~/TAXO/COInr_v202305.fasta -T ~/TAXO/taxdump_COInr_v202305 -n 10 -x 1000000000
+Rscript NJORDR_reduce_and_format.R -s ~/TAXO/TAXO_COI/trimmed.tsv -t ~/TAXO/TAXO_COI/taxonomy.tsv -c 19 -f ~/TAXO/TAXO_COI/COInr_v202305.fasta -T ~/TAXO/TAXO_COI/taxdump_COInr_v202305 -n 10 -x 1000000000
 
 
 ##############################
@@ -63,7 +65,7 @@ Rscript NJORDR_reduce_and_format.R -s ~/TAXO/COInr/trimmed.tsv -t ~/TAXO/COInr/t
 ##############################
 
 # obitools3 part to create the obidms object
-bash NJORDR_create_obidms.sh -f ~/TAXO/COInr_v202305.fasta -t ~/TAXO/taxdump_COInr_v202305 -o ~/TAXO/COI_NJORDR -T 0.7
+bash NJORDR_create_obidms.sh -f ~/TAXO/TAXO_COI/COInr_v202305.fasta -t ~/TAXO/TAXO_COI/taxdump_COInr_v202305 -o ~/TAXO/TAXO_COI/COI_NJORDR -T 0.7
 
 
 
