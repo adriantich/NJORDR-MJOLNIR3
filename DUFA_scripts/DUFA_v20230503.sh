@@ -19,7 +19,7 @@ reverse=''
 Date=2022_05_06
 # add_seqs=DUFA_scripts/Additional_seqs.tsv
 # add_seqs=Additional_seqs.tsv
-out_dir=~/TAXO_DUFA/
+out_dir=~/TAXO/TAXO_DUFA/
 
 # first download the COInr database. In this case only the taxonomy file will be used.
 
@@ -34,7 +34,7 @@ mv COInr_${Date} COInr
 # create new files in the correct format
 Rscript ${scripts_DUFA}NJORDR_0.1_format_additional_seqs.R -i ${scripts_DUFA} -o ${out_dir}
 # cat COInr/taxonomy.tsv ${add_seqs_dir}taxo_2join.tsv >taxonomy.tsv
-cat COInr/taxonomy.tsv ${out_dir}taxo_2join.tsv >taxonomy.tsv
+cat ../COInr/taxonomy.tsv ${out_dir}taxo_2join.tsv >taxonomy.tsv
 
 # select region
 perl ${scripts_COInr}select_region.pl -tsv DUFA.tsv -outdir . -e_pcr 1 ${forward} ${reverse} -identity 0 -tcov 0 -min_amplicon_length 299 -max_amplicon_length 320
@@ -43,4 +43,4 @@ perl ${scripts_COInr}select_region.pl -tsv DUFA.tsv -outdir . -e_pcr 1 ${forward
 Rscript ${scripts_DUFA}NJORDR_0.2_remove_duplicates.R -s trimmed.tsv -o trimmed_dereplicated.tsv
 
 
-bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ${out_dir}trimmed_dereplicated.tsv -t ${out_dir}taxonomy.tsv -d ${out_dir}DUFA_07 -o COI_NJORDR
+bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ${out_dir}trimmed_dereplicated.tsv -t ${out_dir}taxonomy.tsv -d ${out_dir}DUFA_08 -o COI_NJORDR
