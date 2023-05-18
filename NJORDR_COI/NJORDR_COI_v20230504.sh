@@ -68,6 +68,9 @@ Rscript NJORDR_reduce_and_format.R -s ~/TAXO/TAXO_COI/trimmed.tsv -t ~/TAXO/TAXO
 # obitools3 part to create the obidms object
 bash NJORDR_create_obidms.sh -f ~/TAXO/TAXO_COI/COInr_v202305.fasta -t ~/TAXO/TAXO_COI/taxdump_COInr_v202305 -o ~/TAXO/TAXO_COI/COI_NJORDR -T 0.7
 
+# copy additional files for THOR's MJOLNIR3 function
+cp order.complete.csv family_to_order.csv genus_to_family.csv ~/TAXO/TAXO_COI/COI_NJORDR
+
 
 
 
