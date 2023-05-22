@@ -129,7 +129,7 @@ rm(input_seqs,dereplicated_seqs)
 print("turning taxids into positives")
 
 # change the taxids from the sequences
-negative_taxids <- out_seqs$taxID<0
+negative_taxids <- out_seqs$taxID<=0
 out_seqs$taxID[negative_taxids] <- abs(out_seqs$taxID[negative_taxids]) + par_new_taxids
 
 # change taxids from the taxonomy:
@@ -137,10 +137,10 @@ print(paste0("Loading data from ",par_taxonomy))
 input_taxonomy <- read.csv(par_taxonomy, sep="\t",comment.char = '"')
 print(paste0("Data from ",par_taxonomy," loaded"))
 # taxids
-negative_taxids <- input_taxonomy$tax_id<0
+negative_taxids <- input_taxonomy$tax_id<=0
 input_taxonomy$tax_id[negative_taxids] <- abs(input_taxonomy$tax_id[negative_taxids]) + par_new_taxids
 # parent_taxids
-negative_taxids <- input_taxonomy$parent_tax_id<0
+negative_taxids <- input_taxonomy$parent_tax_id<=0
 input_taxonomy$parent_tax_id[negative_taxids] <- abs(input_taxonomy$parent_tax_id[negative_taxids]) + par_new_taxids
 
 print("taxids turned into positives")
