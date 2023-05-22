@@ -124,6 +124,8 @@ if (dim(input_seqs)[1]>1) {
 print("Dereplicated")
 out_seqs <- rbind(dereplicated_seqs,sing_seqs)
 rm(input_seqs,dereplicated_seqs)
+no_IUPAC_seqs <- grepl("E",out_seqs$sequence)
+out_seqs <- out_seqs[!no_IUPAC_seqs,]
 
 # convert negative taxids into positive taxids
 print("turning taxids into positives")
