@@ -12,34 +12,12 @@ conda activate mkcoinr
 ##############################
 
 # obtain files downloading COInr:
-bash NJORDR_download_COInr.sh -D 2022_05_06 -d ~/TAXO/
+bash NJORDR_download_18S.sh -s ~/SOFT/mkCOInr/scripts/ -D 2022_05_06 -d ~/TAXO/TAXO_18S/
 
 ##############################
 ### add sequences ###
 ##############################
 
-# important files:
-#
-# COInr.tsv
-# columns ->  seqID	taxID	sequence
-#
-# taxonomy.tsv
-# columns ->  tax_id*	parent_tax_id*	rank*	name_txt*	old_tax_id	taxlevel	synonyms
-# * mandatory fields
-
-# upgrade the files with additional sequences
-# in this case the Additional sequences have to follow a certain format
-# The file also has to meet taxonomy.tsv taxids in case that some would have changed 
-#
-# A- tab separated columns
-# B- no column names
-# C- columns have to be:
-#	1- sequence ID. suggested to begin with 'NS_' (New Sequence)
-#	2- scientific name. suggested to begin with 'NS_' (New Sequence)
-#	3- tax_id from NCBI or new. The latter has to be unique and lower than -10,000,000
-#	4- parent_id from NCBI. If new parent_tax_id this will require manual editing of taxonomy.tsv file
-#	5- rank. 'species' suggested
-#	6- sequence
 
 mkdir ~/TAXO/TAXO_COI/
 Rscript NJORDR_split_additional_seqs.R -a Additional_seqs.tsv
@@ -77,8 +55,6 @@ sed -i -e 's/"version":\t"3.0.1b23",/"version":\t"3.0.1b23",\n\t"ref_db_threshol
 
 # copy additional files for THOR's MJOLNIR3 function
 cp order.complete.csv family_to_order.csv genus_to_family.csv ~/TAXO/TAXO_COI/SMALL/.
-# copy additional files for THOR's MJOLNIR3 function
-cp order.complete.csv family_to_order.csv genus_to_family.csv ~/TAXO/TAXO_COI/COI_NJORDR
 
 
 
