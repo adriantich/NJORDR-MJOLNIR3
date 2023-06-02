@@ -4,36 +4,36 @@
 # also this process has to be done after the trimming so two sequences with the 
 # same tax_id can be different for a larger fragment and identical for a shorter.
 
-
+print("Starting NJORDR_from_dbformat2tsv.R")
 options(scipen=999)
 
 library("optparse")
 library("dplyr")
 library("stringi")
 
-option_list = list(
-  make_option(c("-s", "--silva_db"), type="character", default=NULL, 
-              metavar="character", help = "silva database in fasta format"),
-  make_option(c("-p", "--pr2_db"), type="character", default=NULL, 
-              metavar="character", help = "PR2 dababase in merged xlsx format"),
-  make_option(c("-t", "--taxonomy_input"), type="character", default=NULL, 
-              metavar="character", help = "taxonomy tab file with colnames [tax_id	parent_tax_id	rank	name_txt	old_tax_id	taxlevel	synonyms]"),
-  make_option(c("-c", "--cores"), type="numeric", default=1, 
-              metavar="character", help = "number or cores to run the process in parallel. 1 default"),
-  make_option(c("-o", "--sequence_output"), type="character", default=NULL, 
-              metavar="character", help = "name of the output file for the sequences in tsv format"),
-  make_option(c("-T", "--taxonomy_output"), type="character", default=NULL,  
-              metavar="character", help = "output taxonomy tsv file name")
-); 
-
-opt_parser = OptionParser(option_list=option_list);
-opt = parse_args(opt_parser);
-par_silva <- opt$silva_db
-par_pr2 <- opt$pr2_db
-par_taxonomy_input <- opt$taxonomy_input
-par_cores <- opt$cores
-par_sequence_output <- opt$sequence_output
-par_taxonomy_output <- opt$taxonomy_output
+# option_list = list(
+#   make_option(c("-s", "--silva_db"), type="character", default=NULL, 
+#               metavar="character", help = "silva database in fasta format"),
+#   make_option(c("-p", "--pr2_db"), type="character", default=NULL, 
+#               metavar="character", help = "PR2 dababase in merged xlsx format"),
+#   make_option(c("-t", "--taxonomy_input"), type="character", default=NULL, 
+#               metavar="character", help = "taxonomy tab file with colnames [tax_id	parent_tax_id	rank	name_txt	old_tax_id	taxlevel	synonyms]"),
+#   make_option(c("-c", "--cores"), type="numeric", default=1, 
+#               metavar="character", help = "number or cores to run the process in parallel. 1 default"),
+#   make_option(c("-o", "--sequence_output"), type="character", default=NULL, 
+#               metavar="character", help = "name of the output file for the sequences in tsv format"),
+#   make_option(c("-T", "--taxonomy_output"), type="character", default=NULL,  
+#               metavar="character", help = "output taxonomy tsv file name")
+# ); 
+# 
+# opt_parser = OptionParser(option_list=option_list);
+# opt = parse_args(opt_parser);
+# par_silva <- opt$silva_db
+# par_pr2 <- opt$pr2_db
+# par_taxonomy_input <- opt$taxonomy_input
+# par_cores <- opt$cores
+# par_sequence_output <- opt$sequence_output
+# par_taxonomy_output <- opt$taxonomy_output
 
 # 
 # par_silva <- "~/TAXO/NJORDR_18S/SILVA_db.fasta"
@@ -43,12 +43,12 @@ par_taxonomy_output <- opt$taxonomy_output
 # par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/seqs18S.csv"
 # par_taxonomy_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/taxonomy.tsv"
 # 
-# par_silva <- "~/TAXO/TAXO_18S/SILVA_db.fasta"
-# par_pr2 <- "~/TAXO/TAXO_18S/PR2_db.xlsx"
-# par_taxonomy_input <- "~/TAXO/TAXO_18S/taxonomy.tsv"
-# par_cores <- 60
-# par_sequence_output <- "~/TAXO/TAXO_18S/seqs18S.csv"
-# par_taxonomy_output <- "~/TAXO/TAXO_18S/taxonomy2.tsv"
+par_silva <- "~/TAXO/TAXO_18S/SILVA_db.fasta"
+par_pr2 <- "~/TAXO/TAXO_18S/PR2_db.xlsx"
+par_taxonomy_input <- "~/TAXO/TAXO_18S/taxonomy.tsv"
+par_cores <- 60
+par_sequence_output <- "~/TAXO/TAXO_18S/seqs18S.csv"
+par_taxonomy_output <- "~/TAXO/TAXO_18S/taxonomy2.tsv"
 
 if (is.null(par_silva)){
   print_help(opt_parser)
