@@ -13,7 +13,8 @@ This project is intended to create a pipeline extrapolable to any barcode but we
         - AWI -> 306 sequences
         - CESC -> 764 sequences
         - NIS -> 6008 sequences
-        The total number of sequences was 181622 sequences. However after cleaning steps it ended in 148932 sequences.
+        
+        The total number of sequences was 181622 sequences. However, after cleaning steps, it ended up in 148932 sequences.
 
         https://drive.google.com/drive/folders/1ZFKwXjAlhUy-6ChN5hqGjM6LLUi9JPNn?usp=drive_link
 
