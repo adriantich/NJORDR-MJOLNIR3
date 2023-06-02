@@ -9,12 +9,12 @@ This project is intended to create a pipeline extrapolable to any barcode but we
       - DUFA v202305
 
         This database is created with sequences from BOLD, NCBI and local sequences of four different projects. Initial files contain the following sequences
-        - DUFA -> 174544 sequences
+        - DUFA -> 174,544 sequences
         - AWI -> 306 sequences
         - CESC -> 764 sequences
-        - NIS -> 6008 sequences
+        - NIS -> 6,008 sequences
         
-        The total number of sequences was 181622 sequences. However, after cleaning steps, it ended up in 148932 sequences.
+        The total number of sequences was 181,622 sequences. However, after cleaning steps, it ended up in 148,932 sequences.
 
         https://drive.google.com/drive/folders/1ZFKwXjAlhUy-6ChN5hqGjM6LLUi9JPNn?usp=drive_link
 
@@ -36,7 +36,7 @@ Previous versions:
 
 https://drive.google.com/drive/folders/1GUmPjNlBobIv4OMdB1i1Yf0_HKVkN0T6?usp=share_link
 
-- v20210723 -> 139082 sequences 
-- DUFA_COLR_20210723 -> 140638 sequences
+- v20210723 -> 139,082 sequences 
+- DUFA_COLR_20210723 -> 140,638 sequences
 
 WARNING! This project is under developing. In future versions it is expected to be a Tutorial to run the scripts for any barcode
