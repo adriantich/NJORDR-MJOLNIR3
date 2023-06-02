@@ -1,30 +1,41 @@
 # NJORDR-MJOLNIR3
 Names Joining into Ordered Database with R for MJOLNIR3 pipeline
 
-This is a pipeline to create a Reference DataBase for THOR-MJOLNIR3 function to perform the taxonomic assignment of metabarcoding Data.
+This project to create a Reference DataBase for THOR-MJOLNIR3 function to perform the taxonomic assignment of metabarcoding Data.
 
-This pipeline will be focused on the Leray-XT segment of the COI marker.
-The intention however is provide a sequence of steps that can be performed with any marker.
+This project is intended to create a pipeline extrapolable to any barcode but we provide both the databases and the scripts to create them for the following barcodes:
+- COI
+  - Leray-XT segment of the COI marker.
+      - DUFA v202305
 
-DUFA_db available (COI_NJORDR.obidms).
+        This database is created with sequences from BOLD, NCBI and local sequences of four different projects. Initial files contain the following sequences
+        - DUFA -> 174544 sequences
+        - AWI -> 306 sequences
+        - CESC -> 764 sequences
+        - NIS -> 6008 sequences
+        The total number of sequences was 181622 sequences. However after cleaning steps it ended in 148932 sequences.
 
-- v20230503
-140638 sequences 
-https://drive.google.com/drive/folders/1dVfZYCwoIK6D2V7adhF4xt85WdxzUys7?usp=share_link
+        https://drive.google.com/drive/folders/1ZFKwXjAlhUy-6ChN5hqGjM6LLUi9JPNn?usp=drive_link
+
+        Instructions: download the full TAXO_DUFA directory and set the following parameters from mjolnir5_THOR function to:
+        - tax_dir = 'PATH/TO/DIRECTORY/TAXO_DUFA'
+        - tax_dms_name = 'COI_NJORDR'
+        - minimum_circle = 0.7
+     - NJODRD_COI -> Under developing
+- 18S
+  - v7 with All_shorts primers (Guardiola et al. 2015)  
+    - NJORDR_18Sv7 -> Under developing
+  - v1v2 with primers SSU_F04 (Blaxter et al., 1998) and SSURmod (Sinniger et al., 2016)
+    - NJORDR_18Sv1v2 -> Future project
+- 12S
+  - MiFish fragment with MiFish primers (Miya et al. 2015)
+    - NJORDR_12S -> Future project
 
 Previous versions: 
 
 https://drive.google.com/drive/folders/1GUmPjNlBobIv4OMdB1i1Yf0_HKVkN0T6?usp=share_link
 
 - v20210723 -> 139082 sequences 
+- DUFA_COLR_20210723 -> 140638 sequences
 
-We should describe the motivations of the following steps and the outputs that we want to get. 
-
-Taxo-DMS: this is the object that MJOLNIR3 will use to perform the taxonomic assignment using ecotag from OBITOOLS3 
-(see https://git.metabarcoding.org/obitools/obitools3). To construct this object two other objects are required, the taxdump from NCBI and a reference DataBase.
-
-taxdump: object downloaded from NCBI with the philogenetic information of all the taxid from NCBI. 
-
-Reference DataBase: fasta file with the all the sequences with their id and taxid. The scientific name is not mandatory if the taxid are correct, 
-however it is recommended to retain this information so taxid from NCBI could change and thus all the information lost.
-
+WARNING! This project is under developing. In future versions it is expected to be a Tutorial to run the scripts for any barcode
