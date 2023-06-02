@@ -99,8 +99,7 @@ perl ${scripts_dir}download_taxonomy.pl -outdir ${out_dir}
 
 # download SILVA database
 wget https://www.arb-silva.de/fileadmin/silva_databases/current/Exports/SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta.gz
-tar -zxvf SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta.gz
-rm SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta.gz
+gzip -d SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta.gz
 
 mv SILVA_138.1_SSURef_NR99_tax_silva_trunc.fasta SILVA_db.fasta
 

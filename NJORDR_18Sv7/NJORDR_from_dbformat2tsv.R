@@ -35,13 +35,20 @@ par_cores <- opt$cores
 par_sequence_output <- opt$sequence_output
 par_taxonomy_output <- opt$taxonomy_output
 
-
-par_silva <- "~/TAXO/NJORDR_18S/SILVA_db.fasta"
-par_pr2 <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/PR2_db.xlsx"
-par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/taxonomy.tsv"
-par_cores <- 2
-par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/seqs18S.csv"
-par_taxonomy_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/taxonomy.tsv"
+# 
+# par_silva <- "~/TAXO/NJORDR_18S/SILVA_db.fasta"
+# par_pr2 <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/PR2_db.xlsx"
+# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/taxonomy.tsv"
+# par_cores <- 2
+# par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/seqs18S.csv"
+# par_taxonomy_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/taxonomy.tsv"
+# 
+# par_silva <- "~/TAXO/TAXO_18S/SILVA_db.fasta"
+# par_pr2 <- "~/TAXO/TAXO_18S/PR2_db.xlsx"
+# par_taxonomy_input <- "~/TAXO/TAXO_18S/taxonomy.tsv"
+# par_cores <- 60
+# par_sequence_output <- "~/TAXO/TAXO_18S/seqs18S.csv"
+# par_taxonomy_output <- "~/TAXO/TAXO_18S/taxonomy2.tsv"
 
 if (is.null(par_silva)){
   print_help(opt_parser)
@@ -96,7 +103,7 @@ find_taxids_silva <- function(seq, input_taxonomy = input_taxonomy,silva_names =
       parent_taxid  <- input_taxonomy$parent_tax_id[input_taxonomy$tax_id == taxid]
       parent_taxid <- parent_taxid[1]
       break
-    } else if (sum(grepl(line[[1]][i], input_taxonomy$synonyms))>0) {
+    } else if (sum(grepl(line[[1]][i], input_taxonomy$synonyms, fixed = T))>0) {
       taxid <- input_taxonomy$tax_id[grepl(line[[1]][i], input_taxonomy$synonyms)]
       taxid <- taxid[1]
       rank <- input_taxonomy$rank[input_taxonomy$tax_id == taxid]
@@ -139,7 +146,8 @@ find_taxids_silva <- function(seq, input_taxonomy = input_taxonomy,silva_names =
 silva_names <- do.call(rbind,parallel::mclapply(1:length(silva_names),find_taxids_silva,input_taxonomy = input_taxonomy,silva_names = silva_names,mc.cores = par_cores))
 silva_db  <- paste0(silva_db)
 
-save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv.RData")
+# save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv.RData")
+save.image("~/TAXO/TAXO_18S/dbformat2tsv1.RData")
 
 ####
 # PR2
@@ -149,7 +157,8 @@ pr2_db <- readxl::read_xlsx(par_pr2)
 
 pr2_db <- pr2_db[pr2_db$gene == "18S_rRNA",]
 
-save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv2.RData")
+# save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv2.RData")
+save.image("~/TAXO/TAXO_18S/dbformat2tsv2.RData")
 
 pr2_db <- pr2_db[,c("pr2_accession","species","silva_taxonomy","gb_organism","sequence")]
 
@@ -157,58 +166,79 @@ pr2_db <- pr2_db[,c("pr2_accession","species","silva_taxonomy","gb_organism","se
 # colnames(pr2_db) <- c("seq_id","name_txt","tax_id", "sequence")
 
 
-save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv3.RData")
+# save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv3.RData")
+save.image("~/TAXO/TAXO_18S/dbformat2tsv3.RData")
+# setwd('~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/')
+# load('dbformat2tsv3.RData')
 
 find_taxids_pr2 <- function(name, input_taxonomy = input_taxonomy,pr2_db = pr2_db) {
-  # for (name in unique(pr2_db$gb_organism)) {
-  # name <- unique(pr2_db$gb_organism)[1]
-  if (!is.na(name)){
-    data <- pr2_db[pr2_db$gb_organism == name,]
-    seq_id <- data$pr2_accession
-    name_txt <- data$gb_organism
-    if (name %in% input_taxonomy$name_txt) {
-      taxid <- input_taxonomy$tax_id[input_taxonomy$name_txt %in% name]
-      taxid <- taxid[1]
-      rank <- input_taxonomy$rank[input_taxonomy$tax_id == taxid]
-      rank <- rank[1]
-      parent_taxid  <- input_taxonomy$parent_tax_id[input_taxonomy$tax_id == taxid]
-      parent_taxid <- parent_taxid[1]
-      break
-    } else if (sum(grepl(name, input_taxonomy$synonyms))>0) {
-      taxid <- input_taxonomy$tax_id[grepl(line[[1]][i], input_taxonomy$synonyms)]
-      taxid <- taxid[1]
-      rank <- input_taxonomy$rank[input_taxonomy$tax_id == taxid]
-      rank <- rank[1]
-      parent_taxid  <- input_taxonomy$parent_tax_id[input_taxonomy$tax_id == taxid]
-      parent_taxid <- parent_taxid[1]
-    } else {
-      out1 <- lapply(paste(data$silva_taxonomy,gsub("_"," ",data$species),sep=";"), FUN = find_taxids_silva, input_taxonomy = input_taxonomy,silva_names = NULL, pr2 = T)
-      tax_id <- out1[[1]]$tax_id
-      rank <- out1[[1]]$rank
-      parent_taxid <- out1[[1]]$parent_tax_id
-    }
+  # pr2_db_parents <- data.frame()
+  # for (name in unique(pr2_db$gb_organism)[-1]) {
+  # name <- unique(pr2_db$gb_organism)[2]
+  data <- pr2_db[pr2_db$gb_organism == name & !is.na(pr2_db$gb_organism),]
+  seq_id <- data$pr2_accession
+  name_txt <- data$gb_organism
+  if (name %in% input_taxonomy$name_txt) {
+    tax_id <- input_taxonomy$tax_id[input_taxonomy$name_txt %in% name]
+    tax_id <- tax_id[1]
+    rank <- input_taxonomy$rank[input_taxonomy$tax_id == tax_id]
+    rank <- rank[1]
+    parent_tax_id  <- input_taxonomy$parent_tax_id[input_taxonomy$tax_id == tax_id]
+    parent_tax_id <- parent_tax_id[1]
+  } else if (sum(grepl(name, input_taxonomy$synonyms))>0) {
+    tax_id <- input_taxonomy$tax_id[grepl(name, input_taxonomy$synonyms)]
+    tax_id <- tax_id[1]
+    rank <- input_taxonomy$rank[input_taxonomy$tax_id == tax_id]
+    rank <- rank[1]
+    parent_tax_id  <- input_taxonomy$parent_tax_id[input_taxonomy$tax_id == tax_id]
+    parent_tax_id <- parent_tax_id[1]
   } else {
-    data <- pr2_db[is.na(pr2_db$gb_organism),]
     out1 <- lapply(paste(data$silva_taxonomy,gsub("_"," ",data$species),sep=";"), FUN = find_taxids_silva, input_taxonomy = input_taxonomy,silva_names = NULL, pr2 = T)
-    seq_id <- data$pr2_accession
-    name_txt <- data$species
     tax_id <- out1[[1]]$tax_id
     rank <- out1[[1]]$rank
-    parent_taxid <- out1[[1]]$parent_tax_id
+    parent_tax_id <- out1[[1]]$parent_tax_id
   }
   out <- data.frame("seq_id" = seq_id,
                     "name_txt" = name_txt,
                     "tax_id" = tax_id, 
                     "parent_tax_id" = parent_tax_id,
                     "rank" = rank,
-                    "sequence" = sequence)
+                    "sequence" = data$sequence)
+  # print(out)
+  return(out)
+  
+  # pr2_db_parents <- rbind(pr2_db_parents,out)
+}
+
+find_taxids_pr2_na <- function(name, input_taxonomy = input_taxonomy,pr2_db = pr2_db) {
+  # for (name in unique(pr2_db$species[is.na(pr2_db$gb_organism)])[1:60]) {
+  # name <- unique(pr2_db$species[is.na(pr2_db$gb_organism)])[1]
+  data <- pr2_db[pr2_db$species == name,]
+  out1 <- find_taxids_silva(paste(data$silva_taxonomy,gsub("_"," ",data$species),sep=";"),input_taxonomy = input_taxonomy,silva_names = NULL, pr2 = T)
+  # out1 <- lapply(paste(data$silva_taxonomy,gsub("_"," ",data$species),sep=";"), FUN = find_taxids_silva, input_taxonomy = input_taxonomy,silva_names = NULL, pr2 = T)
+  seq_id <- data$pr2_accession
+  name_txt <- data$species
+  tax_id <- out1$tax_id
+  rank <- out1$rank
+  parent_tax_id <- out1$parent_tax_id
+  seq <- data$sequence
+  out <- data.frame("seq_id" = seq_id,
+                    "name_txt" = name_txt,
+                    "tax_id" = tax_id, 
+                    "parent_tax_id" = parent_tax_id,
+                    "rank" = rank,
+                    "sequence" = seq)
   # print(out)
   return(out)
 }
 
-pr2_db_parents <- do.call(rbind,parallel::mclapply(unique(pr2_db$gb_organism)[1],find_taxids_pr2,input_taxonomy = input_taxonomy,pr2_db = pr2_db,mc.cores = par_cores))
+
+pr2_db_parents_na <- do.call(rbind,parallel::mclapply(unique(pr2_db$species[is.na(pr2_db$gb_organism)]),find_taxids_pr2_na,input_taxonomy = input_taxonomy,pr2_db = pr2_db,mc.cores = par_cores))
+pr2_db_parents <- parallel::mclapply(unique(pr2_db$gb_organism)[-1],find_taxids_pr2,input_taxonomy = input_taxonomy,pr2_db = pr2_db,mc.cores = par_cores)
+pr2_db_parents <- do.call(rbind,pr2_db_parents)
 
 # save.image("~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_18Sv7/dbformat2tsv.RData")
-# q(save = 'no')
+save.image("~/TAXO/TAXO_18S/dbformat2tsv4.RData")
+q(save = 'no')
 
-load("dbformat2tsv2.RData")
+# load("dbformat2tsv2.RData")
