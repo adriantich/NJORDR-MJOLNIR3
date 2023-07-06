@@ -231,7 +231,7 @@ obi grep --require-rank=family --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/re
 echo "greped ref_seqs_clean"
 
 # build the taxonomic reference database
-obi build_ref_db -t 0.80 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
+obi build_ref_db -t 0.70 --taxonomy ${obidms}/taxonomy/my_tax ${obidms}/ref_seqs_clean ${obidms}/ref_db
 
 
 

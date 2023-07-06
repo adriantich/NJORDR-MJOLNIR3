@@ -9,16 +9,12 @@
 conda activate mkcoinr
 
 scripts_COInr=~/SOFT/mkCOInr/scripts/
-# scripts_COInr=~/mkCOInr/scripts/
 scripts_DUFA=~/NJORDR-MJOLNIR3/DUFA_scripts/
-# scripts_DUFA=~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/DUFA_scripts/
 forward=GGWACWRGWTGRACWNTNTAYCCYCC
 forward="-fw \"${forward}\""
 # reverse=TANACYTCNGGRTGNCCRAARAAYCA
 reverse=''
 Date=2022_05_06
-# add_seqs=DUFA_scripts/Additional_seqs.tsv
-# add_seqs=Additional_seqs.tsv
 out_dir=~/TAXO/TAXO_DUFA/
 
 # first download the COInr database. In this case only the taxonomy file will be used.
@@ -43,4 +39,19 @@ perl ${scripts_COInr}select_region.pl -tsv DUFA.tsv -outdir . -e_pcr 1 ${forward
 Rscript ${scripts_DUFA}NJORDR_0.2_remove_duplicates.R -s trimmed.tsv -o trimmed_dereplicated.tsv
 
 
-bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ${out_dir}trimmed_dereplicated.tsv -t ${out_dir}taxonomy.tsv -d ${out_dir}DUFA_08 -o COI_NJORDR
+bash ${scripts_DUFA}NJORDR_1_from_COInr_to_dms.sh -c ${out_dir}trimmed_dereplicated.tsv -t ${out_dir}taxonomy.tsv -d ${out_dir}DUFA_07 -o COI_NJORDR
+
+
+### to reduce size
+cd ${out_dir}
+
+obi cat -c ${out_dir}DUFA_07/COI_NJORDR/ref_db ${out_dir}COI_NJORDR/ref_db
+obi import --taxdump ${out_dir}DUFA_07/taxdump_20230517 ${out_dir}COI_NJORDR/taxonomy/my_tax
+# he hagut de copiar manualment al view el threshold
+sed -i -e 's/"version":\t"3.0.1b23",/"version":\t"3.0.1b23",\n\t"ref_db_threshold":\t"0.70",/g' ${out_dir}COI_NJORDR.obidms/VIEWS/ref_db.obiview
+
+cp ${scripts_DUFA}family_to_order.csv ${out_dir}.
+cp ${scripts_DUFA}order.complete.csv ${out_dir}.
+cp ${scripts_DUFA}genus_to_family.csv ${out_dir}.
+
+echo FINISHED
