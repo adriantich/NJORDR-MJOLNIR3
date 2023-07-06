@@ -36,7 +36,7 @@ This project is intended to create a pipeline extrapolable to any barcode but we
 
 This is a simplified scheme of the NJORDR workflow:
 
-<p align="center" width="300">
+<p align="center" width="400">
   <img src="https://github.com/adriantich/NJORDR-MJOLNIR3/blob/main/workflow_NJORDR.png">
 </p>
 
