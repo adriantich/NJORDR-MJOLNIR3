@@ -32,6 +32,15 @@ This project is intended to create a pipeline extrapolable to any barcode but we
   - MiFish fragment with MiFish primers (Miya et al. 2015)
     - NJORDR_12S -> Future project
 
+<H2>The NJORDR Workflow</H2>
+
+This is a simplified scheme of the NJORDR workflow:
+
+<p align="center" width="400">
+  <img src="https://github.com/adriantich/NJORDR-MJOLNIR3/blob/main/workflow_NJORDR.png">
+</p>
+
+
 Previous versions: 
 
 https://drive.google.com/drive/folders/1GUmPjNlBobIv4OMdB1i1Yf0_HKVkN0T6?usp=share_link
