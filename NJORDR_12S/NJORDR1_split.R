@@ -13,6 +13,7 @@
 options(scipen=999)
 
 library("optparse")
+library("stringi")
 
 option_list = list(
   make_option(c("-s", "--sequence_input"), type="character", default=NULL, 
@@ -28,7 +29,7 @@ option_list = list(
                                                 "they must be turned into positive and to be sure they",
                                                 "do not have the same number as an existing taxid,",
                                                 "they will be higher than this value. However,",
-                                                "the highest taxid cannot exced 2,147,483,647")) ,
+                                                "the highest taxid cannot exced 2,147,483,647"))
 ); 
 
 opt_parser = OptionParser(option_list=option_list);
@@ -77,9 +78,13 @@ for (i in taxids2modify) {
   input_db$parent_tax_id[input_db$parent_tax_id == i] <- starting_taxid
   starting_taxid <- starting_taxid - 1 
 }
+
+input_db$tax_id <- as.numeric(input_db$tax_id)
+input_db$parent_tax_id <- as.numeric(input_db$parent_tax_id)
+
 # remove sequences without taxid
-input_db <- input_db[!is.na(input_db$tax_id)]
-input_db <- input_db[!is.na(input_db$parent_tax_id)]
+input_db <- input_db[!is.na(input_db$tax_id),]
+input_db <- input_db[!is.na(input_db$parent_tax_id),]
 
 taxonomy <- data.frame(tax_id = as.numeric(input_db$tax_id),
                        parent_tax_id = as.numeric(input_db$parent_tax_id),
@@ -96,9 +101,6 @@ input_taxonomy <- input_taxonomy[!duplicated(input_taxonomy$tax_id),]
 
 # convert negative taxids into positive taxids
 print("turning taxids into positives")
-
-input_db$tax_id <- as.numeric(input_db$tax_id)
-input_db$parent_tax_id <- as.numeric(input_db$parent_tax_id)
 
 # change the taxids from the sequences
 negative_taxids <- input_db$tax_id<=0
@@ -175,8 +177,10 @@ rm(names_dmp)
 
 print("taxdump created")
 
-
 input_db <- input_db[,c("seq_id","tax_id","sequence")]
+
+# remove duplicated sequence id
+input_db <- input_db[!duplicated(input_db$seq_id),]
 
 directory <- dirname(normalizePath(par_sequence_input))
 

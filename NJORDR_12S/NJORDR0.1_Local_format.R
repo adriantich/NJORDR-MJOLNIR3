@@ -53,7 +53,7 @@ parent_name_txt <- NA
 
 sequence <- paste0(local_db)
 
-df_out <- data.frame("seq_id"=seq_id,
+df_out <- data.frame("seq_id"=paste0("NS_",seq_id),
                      "name_txt"=name_txt,
                      "tax_id"=tax_id,
                      "parent_tax_id"=parent_tax_id,

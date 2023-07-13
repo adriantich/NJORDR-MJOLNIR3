@@ -11,6 +11,8 @@ reverse="-rv \"${reverse}\""
 Date=2022_05_06
 out_dir=~/TAXO/TAXO_12S/
 cores=19
+min_lentgh=140
+max_length=190
 
 # first download the COInr database. In this case only the taxonomy file will be used.
 
@@ -33,10 +35,8 @@ tail -n+2 ${scripts_12S}MareMage_formated.tsv >>${scripts_12S}NJORDR_format.tsv
 
 Rscript ${scripts_12S}NJORDR0.2_complete_taxonomy.R -t ${out_dir}COInr/taxonomy.tsv -i ${out_dir}NJORDR_format.tsv -c ${cores} -o ${out_dir}NJORDR_format_completed.tsv
 
+Rscript ${scripts_12S}NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -t ${out_dir}COInr/taxonomy.tsv -T ${out_dir}taxdump
 
-Rscript ${scripts_12S}NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -t ${out_dir}COInr/taxonomy.tsv -T -t ${out_dir}taxdump
-
-
-bash ${scripts_12S}NJORDR_select_region.sh -s ${scripts_COInr} -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/
+bash ${scripts_12S}NJORDR2_select_region.sh -s ${scripts_COInr} -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/ -m ${min_lentgh} -M ${max_length}
 
 
