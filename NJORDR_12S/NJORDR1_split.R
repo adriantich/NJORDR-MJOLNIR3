@@ -49,10 +49,10 @@ par_taxonomy_input <- opt$taxonomy_input
 par_new_taxids <- opt$new_taxids
 par_taxdump <- opt$taxdump_output
 
-par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/NJORDR_format_completed.tsv"
-par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/COInr/taxonomy.tsv"
-par_taxdump <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/taxdump"
-par_new_taxids <- 1000000000
+# par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/NJORDR_format_completed.tsv"
+# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/COInr/taxonomy.tsv"
+# par_taxdump <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/taxdump"
+# par_new_taxids <- 1000000000
 
 input_db <- read.table(par_sequence_input,header = T,quote = NULL,sep = '\t', fill = TRUE)
 
