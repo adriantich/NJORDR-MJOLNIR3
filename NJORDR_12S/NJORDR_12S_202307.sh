@@ -4,9 +4,9 @@
 
 scripts_COInr=~/SOFT/mkCOInr/scripts/
 scripts_12S=~/NJORDR-MJOLNIR3/NJORDR_12S/
-forward=GGWACWRGWTGRACWNTNTAYCCYCC
+forward=GCCGGTAAAACTCGTGCCAGC
 forward="-fw \"${forward}\""
-reverse=TANACYTCNGGRTGNCCRAARAAYCA
+reverse=CATAGTGGGGTATCTAATCCCAGTTTG
 reverse="-rv \"${reverse}\""
 Date=2022_05_06
 out_dir=~/TAXO/TAXO_12S/
@@ -31,7 +31,12 @@ cat ${scripts_12S}Local_formated.tsv >${scripts_12S}NJORDR_format.tsv
 tail -n+2 ${scripts_12S}MiFish_formated.tsv >>${scripts_12S}NJORDR_format.tsv
 tail -n+2 ${scripts_12S}MareMage_formated.tsv >>${scripts_12S}NJORDR_format.tsv
 
-Rscript NJORDR0.2_complete_taxonomy.R -t ${out_dir}COInr/taxonomy.tsv -i ${out_dir}NJORDR_format.tsv -c ${cores} -o ${out_dir}NJORDR_format_completed.tsv
+Rscript ${scripts_12S}NJORDR0.2_complete_taxonomy.R -t ${out_dir}COInr/taxonomy.tsv -i ${out_dir}NJORDR_format.tsv -c ${cores} -o ${out_dir}NJORDR_format_completed.tsv
 
 
-Rscript NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -t ${out_dir}COInr/taxonomy.tsv -T -t ${out_dir}taxdump
+Rscript ${scripts_12S}NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -t ${out_dir}COInr/taxonomy.tsv -T -t ${out_dir}taxdump
+
+
+bash ${scripts_12S}NJORDR_select_region.sh -s ${scripts_COInr} -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/
+
+
