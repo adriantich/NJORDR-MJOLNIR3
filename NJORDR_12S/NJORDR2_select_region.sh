@@ -7,7 +7,7 @@ Help()
    # Display Help
    echo "Creating a DMS object from Obitools3 for the Taxonomic assignment by THOR function from MJOLNIR3 from the COIrn DataDase"
    echo
-   echo "Syntax: bash NJORDR_3_select_region.sh [-h] [help] [-s] [scripts_dir] [-f] [forward] [-r] [reverse] [-c] [sequences] [-d] [out_dir] [-m] [min_amplicon_length] [-M] [max_amplicon_length]"
+   echo "Syntax: bash NJORDR_3_select_region.sh [-h] [help] [-s] [scripts_dir] [-f] [forward] [-r] [reverse] [-c] [sequences] [-d] [out_dir] [-m] [min_amplicon_length] [-M] [max_amplicon_length] [-e] [eco_pcr]"
    echo "options:"
    echo "-h --help	  Print this Help."
    echo ""
@@ -33,7 +33,7 @@ Help()
    echo ""
 }
 
-while getopts hs:f:r:D:c:d:m:M: flag
+while getopts hs:f:r:D:c:d:m:M:e flag
 do
     case "${flag}" in
 	h) Help
@@ -47,7 +47,7 @@ do
 	m) min_amplicon_length="${OPTARG}";;
 	M) max_amplicon_length="${OPTARG}";;
 	e) eco_pcr=" -e_pcr 1 ";;
-	\?) echo "usage: bash NJORDR_3_select_region.sh [-h|s|f|r|D|c|d|m|M]"
+	\?) echo "usage: bash NJORDR_3_select_region.sh [-h|s|f|r|D|c|d|m|M|e]"
 		exit;;
     esac
 done

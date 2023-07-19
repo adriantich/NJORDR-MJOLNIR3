@@ -37,6 +37,6 @@ Rscript ${scripts_12S}NJORDR0.2_complete_taxonomy.R -t ${out_dir}COInr/taxonomy.
 
 Rscript ${scripts_12S}NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -t ${out_dir}COInr/taxonomy.tsv -T ${out_dir}taxdump
 
-bash ${scripts_12S}NJORDR2_select_region.sh -s ${scripts_COInr} -f ${forward} -r ${reverse} -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/ -m ${min_lentgh} -M ${max_length}
+bash ${scripts_12S}NJORDR2_select_region.sh -s ${scripts_COInr} -f ${forward} -r ${reverse} -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/ -m ${min_lentgh} -M ${max_length} -e
 
 
