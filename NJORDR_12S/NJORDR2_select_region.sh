@@ -28,6 +28,9 @@ Help()
    echo "-M		  Maximum length for an amplicon after trimming"
    echo "--max_amplicon_length"
    echo ""
+   echo "-e		  perform eco pcr"
+   echo "--eco_pcr"
+   echo ""
 }
 
 while getopts hs:f:r:D:c:d:m:M: flag
@@ -43,6 +46,7 @@ do
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG%\/} | rev | cut -f1 -d '/' | rev )/";;
 	m) min_amplicon_length="${OPTARG}";;
 	M) max_amplicon_length="${OPTARG}";;
+	e) eco_pcr=" -e_pcr 1 ";;
 	\?) echo "usage: bash NJORDR_3_select_region.sh [-h|s|f|r|D|c|d|m|M]"
 		exit;;
     esac
@@ -93,6 +97,10 @@ if [ -z "${max_amplicon_length}" ]
  else
  max_amplicon_length="-max_amplicon_length ${max_amplicon_length}"
  fi
+if [ -z "${eco_pcr}" ]
+ then
+ eco_pcr=" -e_pcr 0 "
+ fi
 
 echo "scripts_dir set as ${scripts_dir}"
 echo "forward primer set as ${forward}"
@@ -124,7 +132,7 @@ if [ ! -d ${out_dir} ]
  mkdir ${out_dir} 
 fi
 
-perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} -e_pcr 1 ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length}
+perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} ${eco_pcr} ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length}
 
 # mkdir ${out_dir}/first_trimm
 # first select from forward to the end
