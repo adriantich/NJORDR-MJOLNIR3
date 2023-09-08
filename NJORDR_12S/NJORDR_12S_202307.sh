@@ -40,3 +40,8 @@ Rscript ${scripts_12S}NJORDR1_split.R -s ${out_dir}NJORDR_format_completed.tsv -
 bash ${scripts_12S}NJORDR2_select_region.sh -s ${scripts_COInr} -f ${forward} -r ${reverse} -c ~/TAXO/TAXO_12S/NJORDR_sequences.tsv -d ~/TAXO/TAXO_12S/ -m ${min_lentgh} -M ${max_length} -e
 
 
+obi ecopcr -F GCCGGTAAAACTCGTGCCAGC -R CATAGTGGGGTATCTAATCCCAGTTTG --taxonomy prova/taxonomy/my_tax --min-length 140 --max-length 190 prova/seqs prova/seqs_selected
+
+
+
+
