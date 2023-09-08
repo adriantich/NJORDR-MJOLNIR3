@@ -40,6 +40,43 @@ This is a simplified scheme of the NJORDR workflow:
   <img src="https://github.com/adriantich/NJORDR-MJOLNIR3/blob/main/workflow_NJORDR.png">
 </p>
 
+<H3>DESCRIPTION</H3>
+The forkflow of the NJORDR pipeline consists in 5 steps descrived below. However, as NJORDR is intended to be a package to create reference databases for different markers, there are some steps that will be standard for all markers but the first part of the step-0 and the step-2 will require special adaptation to each case.
+
+<H4>STEP-0 - To obtain a formated sequence database and the phylogenetic tree.</H4>
+In this step the final goal is to obtain a uniq .tsv file that contains the taxonomic information of the database based on the tax_id and parent_tax_id to assign each sequence to a branch of the phylogenetic tree. The whole taxonomic tree is then used both for the following steps to create the Taxdump object (The object with all the tree in the required format dor obitools3) and to complete or correct the information in our database.
+      - To obtain the taxonomic tree you can [create it](https://mkcoinr.readthedocs.io/en/latest/content/tutorial.html#create-coinr-from-bold-and-ncbi) or download it directly (recomended). NJORDR will follow the format of mkCOInr taxonomy.tsv file to only use an standardised intitial file. This format also allows to distinguish between tax_id's that are in the NCBI and the new tax_id's that are not present (at this point, negative tax_id's)
+
+      
+      
+      
+
+
+<H2>INSTALLATION</H2>
+
+NJORDR runs on linux using conda environment. Most of the code is in R and bash. To install the depencies follow the next steps:
+
+- Create a conda environment ([click here to see how to install miniconda](https://docs.conda.io/en/latest/miniconda.html)). If you have installed [MJOLNIR3](https://github.com/adriantich/MJOLNIR3) following the tutorial, you can use the same environment.
+
+      # with conda previously installed
+      # Create conda enviroment
+      conda create -n mjolnir3 python=3.9
+      # to activate the environment tipe
+      conda activate mjolnir3
+
+- Clone NJORDR repository
+
+      git clone https://github.com/adriantich/NJORDR-MJOLNIR3.git
+
+- Install [mkCOInr](https://mkcoinr.readthedocs.io/en/latest/content/installation.html) and dependencies
+
+      cd NJORDR-MJOLNIR3
+      python3 -m pip install cutadapt
+      conda install -c bioconda blast -y
+      conda install -c bioconda vsearch -y
+      pip install nsdpy
+      git clone https://github.com/meglecz/mkCOInr.git
+
 
 Previous versions: 
 
