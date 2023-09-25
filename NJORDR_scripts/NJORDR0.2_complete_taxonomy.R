@@ -16,6 +16,10 @@ option_list = list(
               metavar="character", help = "taxonomy tab file with colnames [tax_id	parent_tax_id	rank	name_txt	old_tax_id	taxlevel	synonyms]"),
   make_option(c("-i", "--sequence_input"), type="character", default=NULL,
               metavar="character", help = "name of the input file for the sequences in tsv format to be completed"),
+  make_option(c("-r", "--rds_input_format"), action="store_true", default=F, 
+              help = paste("Input file in rds format.")),
+  make_option(c("-R", "--rds_output_format"), action="store_true", default=F, 
+              help = paste("Output file in rds format.")),
   make_option(c("-c", "--cores"), type="numeric", default=1,
               metavar="character", help = "number or cores to run the process in parallel. 1 default"),
   make_option(c("-o", "--sequence_output"), type="character", default=NULL,
@@ -53,7 +57,11 @@ input_taxonomy <- read.csv(par_taxonomy_input, sep="\t",comment.char = '"')
 print(paste0("Data from ",par_taxonomy_input," loaded"))
 
 print(paste0("Loading data from ",par_sequence_input))
-input_db <- read.csv(par_sequence_input, sep = "\t")
+if (opt$rds_input_format) {
+  input_db <- readRDS(par_sequence_input)
+} else {
+  input_db <- read.csv(par_sequence_input, sep = "\t")
+}
 
 input_db$tax_id <- as.numeric(input_db$tax_id)
 
@@ -213,6 +221,6 @@ if (for_correction) {
 }
 write.table(input_db,file = par_sequence_output,quote = F,row.names = F,sep = "\t")
 message("Please, check manually te word 'correct' for fields where to correct manually the information.")
-
+saveRDS(input_db,file = sub(".[tc]sv",".rds",par_sequence_output))
 q(save = 'no')
 
