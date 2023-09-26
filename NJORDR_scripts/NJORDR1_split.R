@@ -191,4 +191,4 @@ input_db <- input_db[!duplicated(input_db$seq_id),]
 
 directory <- dirname(normalizePath(par_sequence_input))
 
-write.table(input_db, paste0(directory,"/NJORDR_sequences.tsv"),row.names = F,col.names = F,quote = F,sep = "\t")
+write.table(input_db, paste0(directory,"/NJORDR_sequences.tsv"),row.names = F,quote = F,sep = "\t")

@@ -110,27 +110,6 @@ if [ -z "${eco_pcr}" ]
  eco_pcr=" -e_pcr 0 "
  fi
  
-# create out_dir if it does not exists
-
-if [ ! -d ${out_dir} ]
- then
- mkdir ${out_dir} 
-fi
- 
-if [ -z "${bait_fas_pattern}" ]
- then
- if [ -z "${bait_fas}" ]
-   then
-   echo "no file or pattern has been given to be used as reference sequence file for trimming"
-   fi
-else
- grep ${bait_fas_pattern} ${sequences} >${out_dir}/bait_fas.fasta
- sed -i 's/^/>/g' ${out_dir}/bait_fas.fasta
- sed -i 's/\(.*\)\t/\1\n/g' ${out_dir}/bait_fas.fasta
- bait_fas="-bait_fas ${out_dir}/bait_fas.fasta"
- fi
- 
-
 echo "scripts_dir set as ${scripts_dir}"
 echo "forward primer set as ${forward}"
 echo "reverse primer set as ${reverse}"
@@ -154,12 +133,27 @@ function catch()
 }
 # call cutadapt --help and if does not work returns and error and exits
 { try; ( cutadapt --help &>/dev/null &&  echo "mkCOInr activated";  ); catch || {  echo "ERROR! mkCOInr not activated"; exit ; }; }
-
+ 
+# create out_dir if it does not exists
 
 if [ ! -d ${out_dir} ]
  then
  mkdir ${out_dir} 
 fi
+ 
+if [ -z "${bait_fas_pattern}" ]
+ then
+ if [ -z "${bait_fas}" ]
+   then
+   echo "no file or pattern has been given to be used as reference sequence file for trimming"
+   fi
+else
+ grep ${bait_fas_pattern} ${sequences} >${out_dir}/bait_fas.fasta
+ sed -i 's/^/>/g' ${out_dir}/bait_fas.fasta
+ sed -i 's/\(.*\)\t/\1\n/g' ${out_dir}/bait_fas.fasta
+ bait_fas="-bait_fas ${out_dir}/bait_fas.fasta"
+ fi
+
 
 perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} ${eco_pcr} ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length} ${bait_fas}
 

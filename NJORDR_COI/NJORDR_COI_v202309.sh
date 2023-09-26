@@ -43,7 +43,7 @@ fi
 
 # 1 split the Data into 2 different files. the sequences and the taxonomic tree
 
-# Rscript scripts/NJORDR1_split.R -s COMPLETE_DB/NJORDR_format_completed.rds -r -t TAXONOMY_TREE/taxonomy.tsv -T taxdump_202309 -n 1000000000
+Rscript scripts/NJORDR1_split.R -s COMPLETE_DB/NJORDR_format_completed.rds -r -t TAXONOMY_TREE/taxonomy.tsv -T taxdump_202309 -n 1000000000
 
 
 if [ ! -d SEQ_FORMATING ]
