@@ -18,7 +18,7 @@ option_list = list(
   make_option(c("-a", "--add_seqs"), type="character", default=NULL,  
               metavar="character", help = "additional sequences to add to COInr"),
   make_option(c("-A", "--add_seqs_path"), type="character", default=".",  
-              metavar="character", help = "path from which to search for additional sequeneces"),
+              metavar="character", help = "path from which to search for additional sequeneces. These sequences will be added the ManCurSeq_ prefix"),
   make_option(c("-r", "--rds"), action="store_true", default=F, 
               help = paste("Retrive a rds file with the compressed data for sollowing steps."))
 ); 
@@ -36,12 +36,13 @@ par_add_seqs <- opt$add_seqs
 par_add_seqs_path <- opt$add_seqs_path
 par_rds <- opt$rds
 
-
 # par_add_seqs_path <- "../"
 # par_add_seqs <- "../DUFA_scripts/Additional_seqs_*"
 # read file
+message('reading input file')
 data <- read.table(par_input_data,header = T,quote = NULL,sep = '\t', fill = TRUE)
 
+message('including missing columns')
 # add the missing columns
 data <- data.frame(seq_id = data$seqID,
                    name_txt = NA,
@@ -53,10 +54,12 @@ data <- data.frame(seq_id = data$seqID,
 # for each path in the add_seqs create a file path. This also applies to a general
 # patterns that match different files.
 if (!is.null(par_add_seqs)) {
-  add_files <- paste0(par_add_seqs_path,strsplit(par_add_seqs,split = ","))
+  add_files <- paste(par_add_seqs_path,strsplit(par_add_seqs,split = ",")[[1]],sep='/')
   for (path in add_files) {
-    for (file in list.files(path= sub("/[^/]*$", "", add_files), pattern=sub(".*/", "",add_files),full.names = T)) {
-      additional <- read.table(file,quote = NULL,sep = '\t',col.names = c('seq_id','name_txt','tax_id','parent_tax_id','rank','sequence'))
+    for (file in list.files(path= sub("/[^/]*$", "", path), pattern=sub(".*/", "",path),full.names = T)) {
+      message(paste('including sequences from', file))
+      additional <- read.csv(file,quote = NULL,sep = '\t')
+      additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
       data <- rbind(data,additional)
     }
   }

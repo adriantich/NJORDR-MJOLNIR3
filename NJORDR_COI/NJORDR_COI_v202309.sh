@@ -18,7 +18,7 @@ cp ../NJORDR_scripts/NJORDR*_* scripts/.
 
 # First download COInr data.
 # This way also the tax tree is downloaded.
-# bash scripts/NJORDR0.1_download_COInr.sh -a ../DUFA_scripts/Additional_seqs_*
+bash scripts/NJORDR0.1_download_COInr.sh -a 'Manual_Curated_Sequences.tsv'
 
 # separate the taxonomy tree
 
@@ -35,4 +35,12 @@ if [ ! -d COMPLETE_DB ]
 fi
 
 # complete the taxonomy file
-Rscript scripts/NJORDR0.2_complete_taxonomy.R -t TAXONOMY_TREE/taxonomy.tsv -i NJORDR0.1_output/NJORDR0.1_sequences.rds -c ${cores} -o COMPLETE_DB/NJORDR_format_completed.tsv -r -R
+# Rscript scripts/NJORDR0.2_complete_taxonomy.R -t TAXONOMY_TREE/taxonomy.tsv -i NJORDR0.1_output/NJORDR0.1_sequences.rds -c ${cores} -o COMPLETE_DB/NJORDR_format_completed.tsv -r -R
+
+# once we have the whole database now we are going to select region and build the obitools3 database 
+
+#### Main NJORDR pipeline
+
+# 1 split the Data into 2 different files. the sequences and the taxonomic tree
+
+# Rscript scripts/NJORDR1_split.R -s COMPLETE_DB/NJORDR_format_completed.rds -r -t TAXONOMY_TREE/taxonomy.tsv -T taxdump_202309 -n 1000000000

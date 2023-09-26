@@ -19,6 +19,8 @@ option_list = list(
   make_option(c("-s", "--sequence_input"), type="character", default=NULL, 
               metavar="character", help = paste("sequence tab file in NJORDR format.",
                                                 "colnames: seq_id name_txt tax_id parent_tax_id parent_name_txt(optional) rank sequence")),
+  make_option(c("-r", "--rds_input_format"), action="store_true", default=F, 
+              help = paste("Input file in rds format.")),
   make_option(c("-t", "--taxonomy_input"), type="character", default=NULL, 
               metavar="character", help = "taxonomy tab file with colnames [tax_id	parent_tax_id	rank	name_txt	old_tax_id	taxlevel	synonyms]"),
   make_option(c("-T", "--taxdump_output"), type="character", default=NULL,  
@@ -54,15 +56,20 @@ par_taxdump <- opt$taxdump_output
 # par_taxdump <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/taxdump"
 # par_new_taxids <- 1000000000
 
-input_db <- read.table(par_sequence_input,header = T,quote = NULL,sep = '\t', fill = TRUE)
+
+if (opt$rds_input_format) {
+  input_db <- readRDS(par_sequence_input)
+} else {
+  input_db <- read.table(par_sequence_input,header = T,quote = NULL,sep = '\t', fill = TRUE)
+}
 
 print(paste0("Loading data from ",par_taxonomy_input))
 input_taxonomy <- read.csv(par_taxonomy_input, sep="\t",comment.char = '"')
 print(paste0("Data from ",par_taxonomy_input," loaded"))
 
 for (col in 1:dim(input_db)[2]) {
-  if (sum(grepl('correct',input_db[,col]))) {
-    warning("fields are still not corrected. Search manually for the 'correct' word and correct the fields manually.")
+  if (sum(grepl('correct_manually',input_db[,col]))) {
+    warning("fields are still not corrected. Search manually for the 'correct_manually' word and correct the fields manually.")
     stop()
   }
 }

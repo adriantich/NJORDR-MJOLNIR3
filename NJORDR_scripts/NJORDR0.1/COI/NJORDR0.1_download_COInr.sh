@@ -27,7 +27,7 @@ Help()
    echo "-d --out_dir	  Optional, directory path of the output files. If not specified, ouput files will be "
    echo "		  printed in the current directory"
    echo ""
-   echo "-a --add_seq	  Optional, additional sequences to add. Set file paths separated by commas. No column names allowed."
+   echo "-a --add_seq	  Optional, additional sequences to add. Set file paths separated by commas. No column names allowed. Set the string within \"\""
    echo
 }
 
@@ -38,7 +38,7 @@ do
 		exit;;
 	D) Date="${OPTARG}";;
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG%\/} | rev | cut -f1 -d '/' | rev )/";;
-	a) add_seq="${OPTARG}";;
+	a) add_seq=${OPTARG};;
 	\?) echo "usage: bash NJORDR_1_download_COInr.sh [-h|D|d|a]"
 		exit;;
     esac
@@ -61,9 +61,11 @@ if [ -z "${out_dir}" ]
 if [ -z "${add_seq}" ]
  then
  add_sequences=""
- echo "output files will be printed in the ${out_dir} directory"
+ echo "no manual curated sequences added."
  else
- add_sequences="-a ${add_seq} -A ${RUN_PATH}"
+ add_sequences="-a $( echo ${add_seq} | tr ' ' ',') -A ${RUN_PATH}"
+ echo "the following sequences will be added"
+ echo "$( ls $( echo ${add_seq} | tr ',' ' ' )) "
  fi
 
 echo "Date set as ${Date}"

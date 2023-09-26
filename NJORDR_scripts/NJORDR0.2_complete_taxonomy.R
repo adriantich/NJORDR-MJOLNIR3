@@ -220,7 +220,7 @@ if (for_correction) {
   par_sequence_output <- sub(".[tc]sv","_to_correct.tsv",par_sequence_output)
 }
 write.table(input_db,file = par_sequence_output,quote = F,row.names = F,sep = "\t")
-message("Please, check manually te word 'correct' for fields where to correct manually the information.")
+message("Please, check manually te word 'correct_manually' for fields where to correct manually the information.")
 saveRDS(input_db,file = sub(".[tc]sv",".rds",par_sequence_output))
 q(save = 'no')
 
