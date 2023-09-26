@@ -5,7 +5,7 @@
 Help()
 {
    # Display Help
-   echo "Creating a DMS object from Obitools3 for the Taxonomic assignment by THOR function from MJOLNIR3 from the COIrn DataDase"
+   echo "Select a region from a database using primer sets or using a set of phylogenetically variable sequences."
    echo
    echo "Syntax: bash NJORDR_3_select_region.sh [-h] [help] [-s] [scripts_dir] [-f] [forward] [-r] [reverse] [-c] [sequences] [-d] [out_dir] [-m] [min_amplicon_length] [-M] [max_amplicon_length] [-e] [eco_pcr]"
    echo "options:"
@@ -28,12 +28,18 @@ Help()
    echo "-M		  Maximum length for an amplicon after trimming"
    echo "--max_amplicon_length"
    echo ""
+   echo "-b		  A small phylogenetically diverse fasta file with sequences already trimmed to the target region; Optional; Can be produced by e-pcr included in the script."
+   echo "--bait_fas"
+   echo ""
+   echo "-B		  Instead of using a separate file as bait_fas, if the sequence file contain those sequences differenciated by a pattern, this pattern can be set to use them"
+   echo "--bait_fas_pattern"
+   echo ""
    echo "-e		  perform eco pcr"
    echo "--eco_pcr"
    echo ""
 }
 
-while getopts hs:f:r:D:c:d:m:M:e flag
+while getopts hs:f:r:D:c:d:m:M:b:B:e flag
 do
     case "${flag}" in
 	h) Help
@@ -46,8 +52,10 @@ do
 	d) out_dir="$( cd -P "$( dirname "${OPTARG}" )" >/dev/null 2>&1 && pwd )/$( echo ${OPTARG%\/} | rev | cut -f1 -d '/' | rev )/";;
 	m) min_amplicon_length="${OPTARG}";;
 	M) max_amplicon_length="${OPTARG}";;
+	b) bait_fas="-bait_fas ${OPTARG}";;
+	B) bait_fas_pattern="${OPTARG}";;
 	e) eco_pcr=" -e_pcr 1 ";;
-	\?) echo "usage: bash NJORDR_3_select_region.sh [-h|s|f|r|D|c|d|m|M|e]"
+	\?) echo "usage: bash NJORDR_3_select_region.sh [-h|s|f|r|D|c|d|m|M|b|B|e]"
 		exit;;
     esac
 done
@@ -101,6 +109,27 @@ if [ -z "${eco_pcr}" ]
  then
  eco_pcr=" -e_pcr 0 "
  fi
+ 
+# create out_dir if it does not exists
+
+if [ ! -d ${out_dir} ]
+ then
+ mkdir ${out_dir} 
+fi
+ 
+if [ -z "${bait_fas_pattern}" ]
+ then
+ if [ -z "${bait_fas}" ]
+   then
+   echo "no file or pattern has been given to be used as reference sequence file for trimming"
+   fi
+else
+ grep ${bait_fas_pattern} ${sequences} >${out_dir}/bait_fas.fasta
+ sed -i 's/^/>/g' ${out_dir}/bait_fas.fasta
+ sed -i 's/\(.*\)\t/\1\n/g' ${out_dir}/bait_fas.fasta
+ bait_fas="-bait_fas ${out_dir}/bait_fas.fasta"
+ fi
+ 
 
 echo "scripts_dir set as ${scripts_dir}"
 echo "forward primer set as ${forward}"
@@ -132,7 +161,7 @@ if [ ! -d ${out_dir} ]
  mkdir ${out_dir} 
 fi
 
-perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} ${eco_pcr} ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length}
+perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} ${eco_pcr} ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length} ${bait_fas}
 
 # mkdir ${out_dir}/first_trimm
 # first select from forward to the end

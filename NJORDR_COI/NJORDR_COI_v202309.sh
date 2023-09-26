@@ -18,7 +18,7 @@ cp ../NJORDR_scripts/NJORDR*_* scripts/.
 
 # First download COInr data.
 # This way also the tax tree is downloaded.
-bash scripts/NJORDR0.1_download_COInr.sh -a 'Manual_Curated_Sequences.tsv'
+# bash scripts/NJORDR0.1_download_COInr.sh -a 'Manual_Curated_Sequences.tsv'
 
 # separate the taxonomy tree
 
@@ -44,3 +44,13 @@ fi
 # 1 split the Data into 2 different files. the sequences and the taxonomic tree
 
 # Rscript scripts/NJORDR1_split.R -s COMPLETE_DB/NJORDR_format_completed.rds -r -t TAXONOMY_TREE/taxonomy.tsv -T taxdump_202309 -n 1000000000
+
+
+if [ ! -d SEQ_FORMATING ]
+ then
+ mkdir SEQ_FORMATING
+fi
+
+# 2 select the region within the Leray-XT primers -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA. However in this case we are going to use the Manual Curated Sequences to align the database and trim the sequences.
+
+bash NJORDR_select_region.sh -s ../mkCOInr/scripts/ -c COMPLETE_DB/NJORDR_sequences.tsv -d SEQ_FORMATING/ -B 'ManCurSeq_'
