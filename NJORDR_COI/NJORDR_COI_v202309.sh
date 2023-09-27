@@ -4,7 +4,7 @@
 # The number of sequences that will remain for each taxid will be a maximum of ten.
 
 # define some variables
-cores=3
+cores=30
 
 # I create a folder with all the scripts that will be used
 if [ ! -d scripts ]

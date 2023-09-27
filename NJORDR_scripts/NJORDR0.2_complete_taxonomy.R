@@ -74,7 +74,7 @@ input_db$name_txt <- gsub("_"," ",input_db$name_txt, fixed = T)
 complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy) {
   # for (tax_id in unique(input_db_taxid$tax_id)) {
   # tax_id = unique(input_db_taxid$tax_id)[1]
-  tax_id=-10000003
+  # tax_id=-10000003
   
   lines <- input_db_taxid[which(tax_id == input_db_taxid$tax_id),]
 
