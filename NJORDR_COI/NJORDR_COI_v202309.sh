@@ -18,7 +18,7 @@ cp ../NJORDR_scripts/NJORDR*_* scripts/.
 
 # First download COInr data.
 # This way also the tax tree is downloaded.
-bash scripts/NJORDR0.1_download_COInr.sh -a 'Manual_Curated_Sequences.tsv'
+bash scripts/NJORDR0.1_download_COInr.sh -a 'Manual_Curated_Sequences.rds'
 
 # separate the taxonomy tree
 

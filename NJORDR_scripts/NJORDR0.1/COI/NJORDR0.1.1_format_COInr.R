@@ -16,7 +16,7 @@ option_list = list(
   make_option(c("-o", "--out_dir"), type="character", default=".", 
               metavar="character", help = "taxonomy tab file with colnames [tax_id	parent_tax_id	rank	name_txt	old_tax_id	taxlevel	synonyms]"),
   make_option(c("-a", "--add_seqs"), type="character", default=NULL,  
-              metavar="character", help = "additional sequences to add to COInr"),
+              metavar="character", help = "additional sequences to add to COInr, allowed extensions: .csv, .tsv, .rds"),
   make_option(c("-A", "--add_seqs_path"), type="character", default=".",  
               metavar="character", help = "path from which to search for additional sequeneces. These sequences will be added the ManCurSeq_ prefix"),
   make_option(c("-r", "--rds"), action="store_true", default=F, 
@@ -61,9 +61,17 @@ if (!is.null(par_add_seqs)) {
   for (path in add_files) {
     for (file in list.files(path= sub("/[^/]*$", "", path), pattern=sub(".*/", "",path),full.names = T)) {
       message(paste('including sequences from', file))
-      additional <- read.csv(file,quote = NULL,sep = '\t')
-      additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
-      data <- rbind(data,additional)
+      if (grepl('\\.csv|\\.tsv',file)) {
+        additional <- read.csv(file,quote = NULL,sep = '\t')
+        additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
+        data <- rbind(data,additional)
+      } else if (grepl('\\.rds|\\.RDS',file)) {
+        additional <- readRDS(file)
+        additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
+        data <- rbind(data,additional)
+      } else {
+        message(paste('extension of', file, 'not recognized'))
+      }
     }
   }
 }
