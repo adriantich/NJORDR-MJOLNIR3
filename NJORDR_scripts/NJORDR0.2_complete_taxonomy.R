@@ -84,6 +84,10 @@ remove_parent <- c()
 # do this only if there is parents
 if (dim(upper_parent)[1]>0) {
   for (i in 1:dim(upper_parent)[1]) {
+    if ((upper_parent$parent_tax_id[i] %in% input_taxonomy$old_tax_id)) {
+      # update if necessary the parennt_tax_id
+      upper_parent$parent_tax_id[i] < input_taxonomy$tax_id[upper_parent$parent_tax_id[i] == input_taxonomy$old_tax_id]
+    }
     if (!(upper_parent$parent_tax_id[i] %in% input_taxonomy$tax_id)) {
       # if the parent_id is not in taxonomy then remove it and also its lowers
       remove_parent <- c(remove_parent,i)
@@ -141,7 +145,7 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
 
 
 
-input_db_taxid <- parallel::mclapply(X = unique(input_db_taxid$tax_id), FUN = complete_from_taxid, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy, mc.cores = par_cores)
+input_db_taxid <- parallel::mclapply(X = unique(input_db_taxid$tax_id), FUN = complete_from_taxid, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy, input_parent_taxids=input_parent_taxids, mc.cores = par_cores)
 
 save.image('After_complete_from_taxid.RData')
 input_db_taxid <- do.call(rbind, input_db_taxid)
