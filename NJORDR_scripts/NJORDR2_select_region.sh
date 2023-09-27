@@ -140,7 +140,8 @@ if [ ! -d ${out_dir} ]
  then
  mkdir ${out_dir} 
 fi
- 
+
+# if false ; then
 if [ -z "${bait_fas_pattern}" ]
  then
  if [ -z "${bait_fas}" ]
@@ -153,7 +154,7 @@ else
  sed -i 's/\(.*\)\t/\1\n/g' ${out_dir}/bait_fas.fasta
  bait_fas="-bait_fas ${out_dir}/bait_fas.fasta"
  fi
-
+# fi
 
 perl ${scripts_dir}select_region.pl -tsv ${sequences} -outdir ${out_dir} ${eco_pcr} ${forward} ${reverse} ${min_amplicon_length} ${max_amplicon_length} ${bait_fas}
 

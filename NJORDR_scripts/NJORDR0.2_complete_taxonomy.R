@@ -33,10 +33,12 @@ par_sequence_input <- opt$sequence_input
 par_cores <- opt$cores
 par_sequence_output <- opt$sequence_output
 
-# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/COInr/taxonomy.tsv"
-# par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/NJORDR_format.tsv"
-# par_cores <- 2
-# par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/NJORDR_format_completed.tsv"
+# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/TAXONOMY_TREE/taxonomy.tsv"
+# par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/NJORDR0.1_output/NJORDR0.1_sequences.rds"
+# par_cores <- 1
+# opt <- c()
+# opt$rds_input_format <- T
+# par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/COMPLETE_DB/NJORDR_format_completed.tsv"
 
 
 if (is.null(par_taxonomy_input)){
@@ -72,6 +74,7 @@ input_db$name_txt <- gsub("_"," ",input_db$name_txt, fixed = T)
 complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy) {
   # for (tax_id in unique(input_db_taxid$tax_id)) {
   # tax_id = unique(input_db_taxid$tax_id)[1]
+  
   lines <- input_db_taxid[which(tax_id == input_db_taxid$tax_id),]
 
   # check if the tax_id is updated

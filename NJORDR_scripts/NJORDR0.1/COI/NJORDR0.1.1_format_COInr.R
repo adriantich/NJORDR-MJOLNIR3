@@ -36,9 +36,12 @@ par_add_seqs <- opt$add_seqs
 par_add_seqs_path <- opt$add_seqs_path
 par_rds <- opt$rds
 
-# par_add_seqs_path <- "../"
-# par_add_seqs <- "../DUFA_scripts/Additional_seqs_*"
-# read file
+# par_input_data <- '~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/NJORDR0.1_output/NJORDR0.1_sequences.rds'
+# par_out_dir <- opt$out_dir
+# par_add_seqs <- opt$add_seqs
+# par_add_seqs_path <- opt$add_seqs_path
+# par_rds <- opt$rds
+
 message('reading input file')
 data <- read.table(par_input_data,header = T,quote = NULL,sep = '\t', fill = TRUE)
 
