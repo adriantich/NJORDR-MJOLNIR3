@@ -74,6 +74,7 @@ input_db$name_txt <- gsub("_"," ",input_db$name_txt, fixed = T)
 complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy) {
   # for (tax_id in unique(input_db_taxid$tax_id)) {
   # tax_id = unique(input_db_taxid$tax_id)[1]
+  tax_id=-10000003
   
   lines <- input_db_taxid[which(tax_id == input_db_taxid$tax_id),]
 
@@ -95,6 +96,8 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
 }
 
 input_db_taxid <- parallel::mclapply(X = unique(input_db_taxid$tax_id), FUN = complete_from_taxid, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy, mc.cores = par_cores)
+
+save.image('After_complete_from_taxid.RData')
 input_db_taxid <- do.call(rbind, input_db_taxid)
 
 input_db <- rbind(input_db,input_db_taxid[grepl("correct_manually",input_db_taxid$tax_id),])
