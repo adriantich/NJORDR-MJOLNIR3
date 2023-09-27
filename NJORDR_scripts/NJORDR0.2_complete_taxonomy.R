@@ -71,21 +71,65 @@ input_db_taxid <- input_db[!is.na(input_db$tax_id),]
 input_db <- input_db[is.na(input_db$tax_id),]
 input_db$name_txt <- gsub("_"," ",input_db$name_txt, fixed = T)
 
-complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy) {
+# separate those rows that do not correspond to sequences but to parent taxa
+input_parent_taxids <- input_db_taxid[(input_db_taxid$sequence==""|is.na(input_db_taxid$sequence)),]
+input_db_taxid <- input_db_taxid[!(input_db_taxid$sequence==""|is.na(input_db_taxid$sequence)),]
+
+# check manually for any parent information manually added to be correctly set
+# in case there is a parent of a parent, put thee lowest parent at the end
+lower_parent <- input_parent_taxids[input_parent_taxids$parent_tax_id%in%input_parent_taxids$tax_id,]
+upper_parent <- input_parent_taxids[!(input_parent_taxids$parent_tax_id%in%input_parent_taxids$tax_id),]
+# then check if the upper parents have a parent_id in the taxonomy and if not, remove it and the lower attached to it
+remove_parent <- c()
+# do this only if there is parents
+if (dim(upper_parent)[1]>0) {
+  for (i in 1:dim(upper_parent)[1]) {
+    if (!(upper_parent$parent_tax_id[i] %in% input_taxonomy$tax_id)) {
+      # if the parent_id is not in taxonomy then remove it and also its lowers
+      remove_parent <- c(remove_parent,i)
+    }
+  }
+  if (length(remove_parent)>0) {
+    upper_parent <- upper_parent[-remove_parent,]
+    lower_parent <- lower_parent[lower_parent$parent_tax_id %in% upper_parent$tax_id,]
+  }
+  input_parent_taxids <- rbind(upper_parent,lower_parent)
+}
+
+
+complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy,input_parent_taxids=input_parent_taxids) {
   # for (tax_id in unique(input_db_taxid$tax_id)) {
   # tax_id = unique(input_db_taxid$tax_id)[1]
   # tax_id=-10000003
+  # tax_id=-1000031
   
   lines <- input_db_taxid[which(tax_id == input_db_taxid$tax_id),]
-
+  parent_manual=F
   # check if the tax_id is updated
   if (!(tax_id %in% input_taxonomy$tax_id) & (tax_id %in% input_taxonomy$old_tax_id)) {
+    # if the tax_id is not in the taxonomy file as tax_id but it is as old_tax_id, update the taxid
     tax_id <- input_taxonomy$tax_id[tax_id == input_taxonomy$old_tax_id]
   } else if (!(tax_id %in% input_taxonomy$tax_id) & !(tax_id %in% input_taxonomy$old_tax_id)){
-    tax_id <- paste0(tax_id,"_correct_manually")
+    # if the tax_id is not at all in the taxonomy file set it to correct manually
+    # however if the taxid has been previously checked and manually added the parent taxids take the information into account
+    # get the parent taxid
+    parent <- unique(lines$parent_tax_id)
+    if (length(parent)>1) {
+      # that would mean that there is a taxid repeated with different parent 
+      lines$parent_tax_id <- "correct_manually_parent_tax_id"
+      tax_id <- paste0(tax_id,"_correct_manually")
+    } else if (is.numeric(parent)) {
+      # if the parent taxid is numeric search for it in input_db_taxid
+      if (parent %in% input_parent_taxids$tax_id) {
+        parent_manual=T
+      } else {
+        lines$parent_tax_id <- "correct_manually_parent_tax_id"
+        tax_id <- paste0(tax_id,"_correct_manually")
+      }
+    }
     lines$tax_id <- tax_id
   }
-  if (is.numeric(tax_id)) {
+  if (is.numeric(tax_id)&(!parent_manual)) {
     lines$name_txt <- input_taxonomy$name_txt[tax_id == input_taxonomy$tax_id][1]
     lines$parent_tax_id <- input_taxonomy$parent_tax_id[tax_id == input_taxonomy$tax_id][1]
     lines$rank <- input_taxonomy$rank[tax_id == input_taxonomy$tax_id][1]
@@ -95,6 +139,8 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
   return(lines)
 }
 
+
+
 input_db_taxid <- parallel::mclapply(X = unique(input_db_taxid$tax_id), FUN = complete_from_taxid, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy, mc.cores = par_cores)
 
 save.image('After_complete_from_taxid.RData')
@@ -102,7 +148,7 @@ input_db_taxid <- do.call(rbind, input_db_taxid)
 
 input_db <- rbind(input_db,input_db_taxid[grepl("correct_manually",input_db_taxid$tax_id),])
 input_db_taxid <- input_db_taxid[!grepl("correct_manually",input_db_taxid$tax_id),]
-
+input_db_taxid <- rbind(input_parent_taxids,input_db_taxid)
 # remove sequences that have no name_txt. at this point, those sequences that 
 # don't have it, can't be assigned to any taxa thus the tax_id has been found as
 # incorrect if the sequence is still in input_db
@@ -177,7 +223,7 @@ complete_from_name <- function(name_txt, input_db = input_db, input_taxonomy = i
                                "name_txt"=new_taxa_name_txt,
                                "tax_id"=new_taxa_tax_id,
                                "parent_tax_id"=c(new_taxa_tax_id[-1],NA),
-                               "parent_name_txt"=NA,
+                               # "parent_name_txt"=NA,
                                "rank"=new_taxa_rank,
                                "sequence"= NA)
         new_taxa <- new_taxa[-dim(new_taxa)[1],]
@@ -189,8 +235,8 @@ complete_from_name <- function(name_txt, input_db = input_db, input_taxonomy = i
         new_taxa <- data.frame("seq_id"=NA,
                                "name_txt"=new_taxa_name_txt,
                                "tax_id"=new_taxa_tax_id,
-                               "parent_tax_id"=c(new_taxa_tax_id[-1],"correct_mannually_parent_tax_id"),
-                               "parent_name_txt"=NA,
+                               "parent_tax_id"=c(new_taxa_tax_id[-1],"correct_manually_parent_tax_id"),
+                               # "parent_name_txt"=NA,
                                "rank"=new_taxa_rank,
                                "sequence"= NA)
         lines$parent_tax_id <- new_taxa_tax_id[1]
