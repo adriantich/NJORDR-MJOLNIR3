@@ -63,11 +63,11 @@ if (!is.null(par_add_seqs)) {
       message(paste('including sequences from', file))
       if (grepl('\\.csv|\\.tsv',file)) {
         additional <- read.csv(file,quote = NULL,sep = '\t')
-        additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
+        additional$seq_id[(!grepl('ManCurSeq_',additional$seq_id))&(!""==additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[(!grepl('ManCurSeq_',additional$seq_id))&(!""==additional$seq_id)])
         data <- rbind(data,additional)
       } else if (grepl('\\.rds|\\.RDS',file)) {
         additional <- readRDS(file)
-        additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[!grepl('ManCurSeq_',additional$seq_id)])
+        additional$seq_id[(!grepl('ManCurSeq_',additional$seq_id))&(!""==additional$seq_id)] <- paste0('ManCurSeq_',additional$seq_id[(!grepl('ManCurSeq_',additional$seq_id))&(!""==additional$seq_id)])
         data <- rbind(data,additional)
       } else {
         message(paste('extension of', file, 'not recognized'))
