@@ -39,6 +39,7 @@ par_sequence_output <- opt$sequence_output
 # opt <- c()
 # opt$rds_input_format <- T
 # par_sequence_output <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/COMPLETE_DB/NJORDR_format_completed.tsv"
+# options(scipen=999)
 
 
 if (is.null(par_taxonomy_input)){
@@ -105,7 +106,7 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
   # for (tax_id in unique(input_db_taxid$tax_id)) {
   # tax_id = unique(input_db_taxid$tax_id)[1]
   # tax_id=-10000003
-  # tax_id=-1000031
+  # tax_id=261871
   
   lines <- input_db_taxid[which(tax_id == input_db_taxid$tax_id),]
   parent_manual=F
@@ -113,6 +114,9 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
   if (!(tax_id %in% input_taxonomy$tax_id) & (tax_id %in% input_taxonomy$old_tax_id)) {
     # if the tax_id is not in the taxonomy file as tax_id but it is as old_tax_id, update the taxid
     tax_id <- input_taxonomy$tax_id[tax_id == input_taxonomy$old_tax_id]
+    lines$tax_id <- tax_id
+    # then be sure the parent taxid is also correct
+    lines$parent_tax_id <- input_taxonomy$parent_tax_id[tax_id == input_taxonomy$tax_id]
   } else if (!(tax_id %in% input_taxonomy$tax_id) & !(tax_id %in% input_taxonomy$old_tax_id)){
     # if the tax_id is not at all in the taxonomy file set it to correct manually
     # however if the taxid has been previously checked and manually added the parent taxids take the information into account
@@ -147,8 +151,9 @@ complete_from_taxid <- function(tax_id, input_db_taxid = input_db_taxid, input_t
 
 input_db_taxid <- parallel::mclapply(X = unique(input_db_taxid$tax_id), FUN = complete_from_taxid, input_db_taxid = input_db_taxid, input_taxonomy = input_taxonomy, input_parent_taxids=input_parent_taxids, mc.cores = par_cores)
 
-save.image('After_complete_from_taxid.RData')
 input_db_taxid <- do.call(rbind, input_db_taxid)
+save.image('After_complete_from_taxid.RData')
+# par_cores = 3
 
 input_db <- rbind(input_db,input_db_taxid[grepl("correct_manually",input_db_taxid$tax_id),])
 input_db_taxid <- input_db_taxid[!grepl("correct_manually",input_db_taxid$tax_id),]

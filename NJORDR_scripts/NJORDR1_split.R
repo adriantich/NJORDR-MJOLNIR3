@@ -51,9 +51,12 @@ par_taxonomy_input <- opt$taxonomy_input
 par_new_taxids <- opt$new_taxids
 par_taxdump <- opt$taxdump_output
 
-# par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/NJORDR_format_completed.tsv"
-# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/COInr/taxonomy.tsv"
-# par_taxdump <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_12S/taxdump"
+# options(scipen=999)
+# par_sequence_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/COMPLETE_DB/NJORDR_format_completed.rds"
+# par_taxonomy_input <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/TAXONOMY_TREE/taxonomy.tsv"
+# par_taxdump <- "~/Nextcloud/2_PROJECTES/NJORDR-MJOLNIR3/NJORDR_COI/taxdump"
+# opt <- c()
+# opt$rds_input_format <- T
 # par_new_taxids <- 1000000000
 
 
@@ -74,8 +77,9 @@ for (col in 1:dim(input_db)[2]) {
   }
 }
 
-# change the taxids without numbers to negative from 100.000 (the lowest from COInr is about -35149)
-starting_taxid <- -100001
+# change the taxids without numbers to negative from the lowest number to lower
+starting_taxid <- suppressWarnings(min(as.numeric(input_db$tax_id[!is.na(as.numeric(input_db$tax_id))])))-1
+message(paste('new taxids will be lower than',starting_taxid))
 taxids2modify <- input_db$tax_id[grep("taxid",input_db$tax_id)]
 taxids2modify <- c(taxids2modify,input_db$parent_tax_id[grep("taxid",input_db$parent_tax_id)])
 taxids2modify <- unique(taxids2modify)
@@ -184,7 +188,10 @@ rm(names_dmp)
 
 print("taxdump created")
 
+
 input_db <- input_db[,c("seq_id","tax_id","sequence")]
+input_db <- input_db[(!input_db$sequence=="")|is.na(input_db$sequence),]
+input_db <- input_db[(!input_db$seq_id=="")|!is.na(input_db$seq_id),]
 
 # remove duplicated sequence id
 input_db <- input_db[!duplicated(input_db$seq_id),]
