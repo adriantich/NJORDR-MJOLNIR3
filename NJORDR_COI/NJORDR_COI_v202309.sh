@@ -54,3 +54,13 @@ fi
 # 2 select the region within the Leray-XT primers -f GGWACWRGWTGRACWNTNTAYCCYCC -r TANACYTCNGGRTGNCCRAARAAYCA. However in this case we are going to use the Manual Curated Sequences to align the database and trim the sequences.
 
 bash scripts/NJORDR2_select_region.sh -s ../mkCOInr/scripts/ -c COMPLETE_DB/NJORDR_sequences.tsv -d SEQ_FORMATING/ -B 'ManCurSeq_'
+
+
+if [ ! -d FINAL_SEQS ]
+ then
+ mkdir FINAL_SEQS
+fi
+
+# 3 reduce the amount of sequences and get the format needed to create the reference database. To reduce the amount of sequences is needed if the database takes too long to be produced.
+Rscript scripts/NJORDR3_reduce_and_format.R -s SEQ_FORMATING/trimmed.tsv -c ${cores} -f FINAL_SEQS/COInr_v202309.fasta -n 10 -k 'ManCurSeq_'
+
