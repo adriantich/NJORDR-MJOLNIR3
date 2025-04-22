@@ -22,7 +22,7 @@ This project is intended to create a pipeline extrapolable to any barcode but we
         - tax_dir = 'PATH/TO/DIRECTORY/TAXO_DUFA'
         - tax_dms_name = 'COI_NJORDR'
         - minimum_circle = 0.7
-     - NJODRD_COI -> Under developing
+     - NJODRD_COI -> This has been left aside. However input files can be found in https://drive.google.com/drive/folders/1NbJ90I6jyYmkxZyJvI70vmsjzPalVbEL?usp=drive_link
 - 18S
   - v7 with All_shorts primers (Guardiola et al. 2015)  
     - NJORDR_18Sv7 -> Under developing
